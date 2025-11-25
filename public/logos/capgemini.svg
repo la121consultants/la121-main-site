@@ -1,0 +1,6 @@
+<svg width="200" height="60" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="60" rx="14" fill="white" fill-opacity="0.06" stroke="#53B0E9" stroke-opacity="0.3" />
+  <text x="100" y="37" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="26" fill="#0069A6" font-weight="600">Capgemini</text>
+  <path d="M155 30c7 0 12 5 12 11 0 6-5 11-12 11-6 0-11-5-11-11 0-6 5-11 11-11z" fill="#00A0DF" fill-opacity="0.4" />
+  <path d="M150 23c3 0 6 2 6 5s-3 5-6 5-5-2-5-5 2-5 5-5z" fill="#49C5B1" fill-opacity="0.6" />
+</svg>
