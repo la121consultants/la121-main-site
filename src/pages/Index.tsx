@@ -2,10 +2,11 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Services from "@/components/Services";
+import JobSeekersBenefits from "@/components/JobSeekersBenefits";
 import CareerSuite from "@/components/CareerSuite";
 import Ebooks from "@/components/Ebooks";
 import Testimonials from "@/components/Testimonials";
-import LeadMagnet from "@/components/LeadMagnet";
+import RealCareerTransformations from "@/components/RealCareerTransformations";
 import Booking from "@/components/Booking";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
@@ -17,10 +18,12 @@ const Index = () => {
       <Hero />
       <About />
       <Services />
+      <JobSeekersBenefits />
       <CareerSuite />
       <Ebooks />
       <LeadMagnet />
       <Testimonials />
+      <RealCareerTransformations />
       <Booking />
       <Contact />
       <Footer />
