@@ -7,14 +7,14 @@ const About = () => {
       <div className="container px-4 mx-auto">
         <div className="max-w-4xl mx-auto text-center space-y-6">
           <h2 className="text-4xl md:text-5xl font-bold text-secondary">
-            About LA121 Consultants
+            About LA121 Consultants: Your Career Consultant UK Team
           </h2>
-          
+
           <p className="text-lg md:text-xl text-foreground/80 leading-relaxed">
-            LA121 Consultants helps individuals stand out in a competitive job market through 
-            tailored CVs, professional portfolios, and AI-powered tools. Led by experienced 
-            consultants who understand what employers want, we empower you to take control 
-            of your career journey.
+            Our CV Revamp Service UK combines professional CV writing, interview preparation,
+            and career coaching UK expertise to help you stand out. From graduate CV services
+            to leadership mentoring, our consultants understand what employers want and guide
+            you with tailored job search support at every stage.
           </p>
           
           <div className="pt-6">

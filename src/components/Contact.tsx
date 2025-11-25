@@ -74,10 +74,11 @@ ${formData.message}
       <div className="container px-4 mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-secondary mb-4">
-            Get in Touch
+            Get in Touch with a Career Consultant UK
           </h2>
           <p className="text-lg text-muted-foreground">
-            Have questions? Fill out the form below and we'll get back to you as soon as possible
+            Tell us what you need — CV revamp service UK support, professional CV writing, graduate CV
+            services, interview preparation, or broader job search support — and we'll reply within 24 hours.
           </p>
         </div>
 
@@ -134,7 +135,7 @@ ${formData.message}
               <CardHeader>
                 <CardTitle>Send us a Message</CardTitle>
                 <CardDescription>
-                  Fill out the form and we'll respond within 24 hours
+                  Share your goals so we can tailor professional CV writing, career coaching UK, or interview preparation.
                 </CardDescription>
               </CardHeader>
               <CardContent>

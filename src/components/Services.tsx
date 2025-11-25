@@ -126,10 +126,11 @@ const Services = () => {
       <div className="container px-4 mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-secondary mb-4">
-            One-to-One Career Services
+            One-to-One Career Coaching UK Services
           </h2>
           <p className="text-lg text-muted-foreground">
-            Personalized career consulting packages designed to help you succeed
+            Choose from tailored CV revamp service UK packages with professional CV writing,
+            interview preparation, graduate CV services, and hands-on job search support.
           </p>
         </div>
         
@@ -190,9 +191,10 @@ const Services = () => {
             </DialogTrigger>
             <DialogContent className="max-w-5xl max-h-[80vh] overflow-y-auto">
               <DialogHeader>
-                <DialogTitle className="text-2xl">Optional Add-Ons</DialogTitle>
+                <DialogTitle className="text-2xl">Optional Add-Ons for CV Revamp Service UK</DialogTitle>
                 <DialogDescription>
-                  Enhance your package with additional services
+                  Enhance your professional CV writing, career coaching UK, and job search support
+                  with targeted extras.
                 </DialogDescription>
               </DialogHeader>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-4">

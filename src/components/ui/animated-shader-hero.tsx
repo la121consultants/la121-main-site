@@ -491,7 +491,7 @@ void main(){gl_Position=position;}`;
       </div>
 
       {logoCloud && logoCloud.logos.length > 0 && (
-        <div className="absolute left-0 right-0 bottom-2 md:bottom-8 z-20 px-4 pointer-events-none">
+        <div className="absolute bottom-6 left-0 right-0 z-20 px-4 pointer-events-none">
           <div className="max-w-6xl mx-auto rounded-3xl border border-white/10 bg-black/60 px-6 py-5 backdrop-blur-xl shadow-[0_20px_60px_rgba(0,0,0,0.45)]">
             {logoCloud.heading && (
               <p className="mb-4 text-center text-sm uppercase tracking-[0.2em] text-white/70">

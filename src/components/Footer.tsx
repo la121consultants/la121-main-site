@@ -10,7 +10,8 @@ const Footer = () => {
           <div className="space-y-4">
             <img src={logo} alt="LA121 Consultants" className="h-16 w-auto" />
             <p className="text-white/80 text-sm">
-              Empowering professionals to achieve their career goals through AI-powered tools and expert guidance.
+              Empowering UK professionals with CV revamp service UK expertise, professional CV writing,
+              interview preparation, and ongoing job search support.
             </p>
           </div>
           
