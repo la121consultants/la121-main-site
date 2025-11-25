@@ -352,6 +352,11 @@ void main(){gl_Position=position;}`;
   }) => {
   const canvasRef = useShaderBackground();
 
+  const filteredLogos =
+    logoCloud?.logos?.filter(
+      (logo) => logo.name.trim().toLowerCase() !== "microsoft"
+    ) ?? [];
+
   return (
     <div className={`relative w-full h-screen overflow-hidden bg-black ${className}`}>
       <style>{`
