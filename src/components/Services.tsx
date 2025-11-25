@@ -25,11 +25,12 @@ const packages = [
     name: "Basic Plus Package",
     price: "£99",
     studentPrice: "£69.99",
-    description: "Perfect for students and entry-level professionals",
+    description: "Polish your application essentials and start landing interviews",
+    bestFor: "Students & first-job seekers",
     features: [
-      "CV Review",
-      "CV Revamp",
-      "1-Page Portfolio"
+      "ATS-ready CV review with written recruiter feedback",
+      "Done-for-you CV revamp tailored to your target role",
+      "1-page portfolio that showcases your top wins"
     ],
     popular: false
   },
@@ -37,51 +38,50 @@ const packages = [
     icon: TrendingUp,
     name: "Essential Career Starter",
     price: "£129",
-    description: "Complete package to kickstart your career journey",
+    description: "Create a compelling story so hiring managers call you back",
+    bestFor: "Recent grads ready to apply",
     features: [
-      "CV Review",
-      "CV Revamp",
-      "Cover Letter",
-      "Interview Prep (30 mins)",
-      "Starter Portfolio",
-      "Unlimited CV AI Tool Access",
-      "WhatsApp Community"
+      "CV review + revamp with laser-focused positioning",
+      "Custom cover letter that highlights measurable wins",
+      "30-min interview prep to tighten your talking points",
+      "Starter portfolio to prove skills visually",
+      "Unlimited CV AI tool access for quick iterations",
+      "Private WhatsApp community for feedback on demand"
     ],
-    popular: false
+    popular: false,
+    highlight: "Best Value"
   },
   {
     icon: Rocket,
     name: "Career Accelerator",
     price: "£249",
-    description: "Comprehensive support for serious job seekers",
+    description: "Fast-track offers with strategy, preparation, and guided execution",
+    bestFor: "Professionals actively interviewing",
     features: [
-      "CV Review",
-      "CV Revamp",
-      "Cover Letter",
-      "Interview Prep (45 mins)",
-      "Job Strategy",
-      "Application Support (1 role)",
-      "Starter Portfolio",
-      "Unlimited CV AI Access",
-      "Unlimited ShowIntroBio Access"
+      "Story-driven CV + cover letter crafted for top-of-stack visibility",
+      "45-min mock interview with tailored scripts and notes",
+      "Job search game plan with step-by-step weekly targets",
+      "Hands-on application support for one priority role",
+      "Portfolio refresh with proof-driven case studies",
+      "Unlimited CV AI & ShowIntroBio access for rapid tweaks"
     ],
-    popular: true
+    popular: true,
+    highlight: "Most Popular"
   },
   {
     icon: Crown,
     name: "Premium Mentorship Programme",
     price: "£499",
-    description: "Full career transformation with premium support",
+    description: "Partner with a mentor to engineer a full career leap",
+    bestFor: "Career switchers & senior roles",
     features: [
-      "Full CV Revamp",
-      "LinkedIn Optimisation",
-      "Cover Letter",
-      "2× Interview Prep Sessions",
-      "Job Search Support",
-      "Application Support (2 roles)",
-      "Professional Portfolio (3–4 Pages)",
-      "Unlimited CV AI Access",
-      "Unlimited ShowIntroBio Access"
+      "Executive-level CV + LinkedIn overhaul for omnichannel consistency",
+      "Story-led cover letter that speaks directly to decision makers",
+      "Two deep-dive interview coaching sessions with recordings",
+      "Job search accountability partner plus tracking dashboard",
+      "Application support for two flagship roles",
+      "Professional 3–4 page portfolio with testimonials and metrics",
+      "Unlimited access to CV AI + ShowIntroBio for ongoing optimisation"
     ],
     popular: false
   }
@@ -126,15 +126,16 @@ const Services = () => {
       <div className="container px-4 mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-secondary mb-4">
-            One-to-One Career Services
+            One-to-One Career Coaching UK Services
           </h2>
           <p className="text-lg text-muted-foreground">
-            Personalized career consulting packages designed to help you succeed
+            Choose from tailored CV revamp service UK packages with professional CV writing,
+            interview preparation, graduate CV services, and hands-on job search support.
           </p>
         </div>
         
         {/* Main Packages */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto mb-10">
           {packages.map((pkg, index) => (
             <Card
               key={index}
@@ -142,11 +143,11 @@ const Services = () => {
                 pkg.popular ? 'border-primary border-2' : ''
               }`}
             >
-              <CardHeader>
-                {pkg.popular && (
-                  <div className="absolute top-0 right-0 bg-primary text-white px-3 py-1 text-xs font-bold rounded-bl-lg rounded-tr-lg">
-                    POPULAR
-                  </div>
+              <CardHeader className="relative space-y-3">
+                {(pkg.highlight || pkg.popular) && (
+                  <Badge className="absolute top-3 right-3 bg-primary text-white">
+                    {pkg.highlight || 'Popular'}
+                  </Badge>
                 )}
                 <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary to-primary-glow flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                   <pkg.icon className="w-7 h-7 text-white" />
@@ -154,16 +155,22 @@ const Services = () => {
                 <CardTitle className="text-xl text-secondary">{pkg.name}</CardTitle>
                 <div className="text-3xl font-bold text-primary mt-2">{pkg.price}</div>
                 <CardDescription className="text-base mt-2">{pkg.description}</CardDescription>
+                <div className="rounded-md bg-muted/50 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-secondary/80">
+                  Best for: <span className="text-foreground normal-case">{pkg.bestFor}</span>
+                </div>
               </CardHeader>
               <CardContent className="space-y-4">
-                <ul className="space-y-2">
-                  {pkg.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-start gap-2 text-sm text-foreground/80">
-                      <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
+                <div>
+                  <p className="text-sm font-semibold text-secondary mb-3">Results-focused support</p>
+                  <ul className="space-y-2">
+                    {pkg.features.map((feature, idx) => (
+                      <li key={idx} className="flex items-start gap-2 text-sm text-foreground/80">
+                        <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
                 <Button
                   className="w-full bg-secondary hover:bg-secondary/90 text-white"
                   onClick={() => {
@@ -178,6 +185,15 @@ const Services = () => {
           ))}
         </div>
 
+        <div className="max-w-3xl mx-auto mb-16">
+          <div className="rounded-2xl border border-secondary/20 bg-secondary/5 px-6 py-5 text-center">
+            <p className="text-lg font-semibold text-secondary">Feel secure with our satisfaction promise</p>
+            <p className="text-sm text-muted-foreground mt-2">
+              If you don’t feel more confident after your first review or coaching session, let us know within 7 days and we’ll redo the work or credit the amount toward another service—no hassle, no extra cost.
+            </p>
+          </div>
+        </div>
+
         {/* Optional Add-Ons - Compact View */}
         <div className="max-w-4xl mx-auto text-center">
           <Dialog open={showAddOns} onOpenChange={setShowAddOns}>
@@ -190,9 +206,10 @@ const Services = () => {
             </DialogTrigger>
             <DialogContent className="max-w-5xl max-h-[80vh] overflow-y-auto">
               <DialogHeader>
-                <DialogTitle className="text-2xl">Optional Add-Ons</DialogTitle>
+                <DialogTitle className="text-2xl">Optional Add-Ons for CV Revamp Service UK</DialogTitle>
                 <DialogDescription>
-                  Enhance your package with additional services
+                  Enhance your professional CV writing, career coaching UK, and job search support
+                  with targeted extras.
                 </DialogDescription>
               </DialogHeader>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-4">

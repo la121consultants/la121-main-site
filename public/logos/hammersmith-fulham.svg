@@ -1,0 +1,12 @@
+<svg width="200" height="60" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="60" rx="14" fill="white" fill-opacity="0.06" stroke="#1C5AA6" stroke-opacity="0.25" />
+  <text x="70" y="34" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="30" font-weight="700">
+    <tspan fill="#D71920">h</tspan>
+    <tspan fill="#005CAB">&amp;</tspan>
+    <tspan fill="#D71920">f</tspan>
+  </text>
+  <path d="M105 34c15-10 35-10 50 0" stroke="#00A0E3" stroke-width="4" stroke-linecap="round" fill="none" />
+  <text x="100" y="48" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="12" letter-spacing="0.15em" fill="#005CAB">
+    HAMMERSMITH &amp; FULHAM COUNCIL
+  </text>
+</svg>

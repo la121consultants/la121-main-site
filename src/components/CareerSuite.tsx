@@ -10,10 +10,11 @@ const CareerSuite = () => {
       <div className="container px-4 mx-auto relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Explore the LA121 Career Suite
+            Explore the LA121 Career Suite for CV Revamp Service UK
           </h2>
           <p className="text-xl text-white/90">
-            Your all-in-one hub to upgrade your professional profile with our AI tools
+            Your all-in-one hub for professional CV writing, graduate CV services, and interview
+            preparation powered by AI-driven tools.
           </p>
         </div>
         
@@ -25,7 +26,8 @@ const CareerSuite = () => {
               </div>
               <CardTitle className="text-2xl text-secondary">AI CV Revamp Tool</CardTitle>
               <CardDescription className="text-base">
-                Transform your CV instantly with AI-powered optimization. Tailor it to any job description in seconds and stand out from the competition.
+                Transform your CV instantly with AI-powered optimisation that mirrors our professional CV
+                writing quality so you stand out fast.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -51,7 +53,8 @@ const CareerSuite = () => {
               </div>
               <CardTitle className="text-2xl text-secondary">ShowIntro Bio Builder</CardTitle>
               <CardDescription className="text-base">
-                Create compelling professional bios for LinkedIn, Instagram, and other platforms. Build your personal brand with AI assistance.
+                Create compelling professional bios for LinkedIn, Instagram, and other platforms to
+                reinforce your wider career coaching UK and job search support plan.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
