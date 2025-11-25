@@ -1,0 +1,7 @@
+<svg width="200" height="60" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="60" rx="14" fill="#0A0A0A" fill-opacity="0.65" stroke="#00A650" stroke-opacity="0.5" />
+  <rect x="15" y="15" width="34" height="30" rx="8" fill="#00A650" />
+  <path d="M28 24l8 6-8 6" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+  <text x="110" y="38" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="26" fill="white" font-weight="600">enterprise</text>
+  <text x="150" y="48" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif" font-size="12" fill="white" letter-spacing="0.2em">rent-a-car</text>
+</svg>
