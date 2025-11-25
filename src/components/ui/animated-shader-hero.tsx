@@ -429,7 +429,7 @@ void main(){gl_Position=position;}`;
       />
       
       {/* Hero Content Overlay */}
-      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-white">
+      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-white px-4 pb-36 md:pb-44">
         {/* Trust Badge */}
         {trustBadge && (
           <div className="mb-8 animate-fade-in-down">
@@ -448,7 +448,7 @@ void main(){gl_Position=position;}`;
           </div>
         )}
 
-        <div className="text-center space-y-6 max-w-5xl mx-auto px-4">
+        <div className="text-center space-y-6 max-w-5xl mx-auto">
           {/* Main Heading with Animation */}
           <div className="space-y-2">
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-fade-in-up animation-delay-200">
