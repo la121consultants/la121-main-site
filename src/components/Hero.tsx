@@ -41,6 +41,11 @@ const Hero = () => {
             alt: "KPMG logo"
           },
           {
+            name: "Microsoft",
+            imageSrc: "/logos/microsoft.svg",
+            alt: "Microsoft logo"
+          },
+          {
             name: "Enterprise Rent-A-Car",
             imageSrc: "/logos/enterprise.svg",
             alt: "Enterprise Rent-A-Car logo"

@@ -342,14 +342,14 @@ void main(){gl_Position=position;}`;
 };
 
 // Reusable Hero Component
-const AnimatedShaderHero: React.FC<HeroProps> = ({
-  trustBadge,
-  headline,
-  subtitle,
-  buttons,
-  logoCloud,
-  className = ""
-}) => {
+  const AnimatedShaderHero: React.FC<HeroProps> = ({
+    trustBadge,
+    headline,
+    subtitle,
+    buttons,
+    logoCloud,
+    className = ""
+  }) => {
   const canvasRef = useShaderBackground();
 
   const filteredLogos =
@@ -495,8 +495,8 @@ const AnimatedShaderHero: React.FC<HeroProps> = ({
         </div>
       </div>
 
-      {logoCloud && filteredLogos.length > 0 && (
-        <div className="absolute left-0 right-0 bottom-2 md:bottom-8 z-20 px-4 pointer-events-none">
+      {logoCloud && logoCloud.logos.length > 0 && (
+        <div className="absolute bottom-6 left-0 right-0 z-20 px-4 pointer-events-none">
           <div className="max-w-6xl mx-auto rounded-3xl border border-white/10 bg-black/60 px-6 py-5 backdrop-blur-xl shadow-[0_20px_60px_rgba(0,0,0,0.45)]">
             {logoCloud.heading && (
               <p className="mb-4 text-center text-sm uppercase tracking-[0.2em] text-white/70">
@@ -505,11 +505,11 @@ const AnimatedShaderHero: React.FC<HeroProps> = ({
             )}
             <div className="overflow-hidden">
               <div className="flex gap-6 logo-marquee">
-                {[...filteredLogos, ...filteredLogos].map((logo, index) => (
+                {[...logoCloud.logos, ...logoCloud.logos].map((logo, index) => (
                   <div
                     key={`${logo.name}-${index}`}
                     className="logo-float flex min-w-[160px] flex-col items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-4 py-3 text-center"
-                    style={{ animationDelay: `${(index % filteredLogos.length) * 0.2}s` }}
+                    style={{ animationDelay: `${(index % logoCloud.logos.length) * 0.2}s` }}
                   >
                     {logo.imageSrc ? (
                       <img
