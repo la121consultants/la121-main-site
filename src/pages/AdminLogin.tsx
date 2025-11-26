@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
+import { SUPER_ADMIN_EMAIL } from '@/hooks/useSuperAdmin';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -79,6 +80,13 @@ const AdminLogin = () => {
       return;
     }
 
+    if (email.toLowerCase() !== SUPER_ADMIN_EMAIL.toLowerCase()) {
+      toast.error('Super admin access restricted', {
+        description: `Only ${SUPER_ADMIN_EMAIL} can unlock the super admin controls.`,
+      });
+      return;
+    }
+
     setSuperAdminLoading(true);
 
     try {
@@ -91,13 +99,10 @@ const AdminLogin = () => {
         throw error || new Error('Unable to sign in as super admin');
       }
 
-      const { data: hasSuperAdminRole, error: roleError } = await supabase.rpc(
-        'has_role',
-        {
-          _user_id: data.user.id,
-          _role: 'admin',
-        }
-      );
+      const { data: hasSuperAdminRole, error: roleError } = await supabase.rpc('has_role', {
+        _user_id: data.user.id,
+        _role: 'super_admin',
+      });
 
       if (roleError) {
         throw roleError;

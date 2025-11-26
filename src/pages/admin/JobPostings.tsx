@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import AdminLayout from '@/components/AdminLayout';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -13,6 +13,8 @@ import {
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
@@ -37,8 +39,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
-import { Eye, CheckCircle, XCircle, Trash2, Star, Filter, Building2, MapPin } from 'lucide-react';
+import { Eye, CheckCircle, XCircle, Trash2, Star, Filter, Building2, MapPin, Edit, PlusIcon } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface JobPosting {
@@ -61,6 +64,28 @@ interface JobPosting {
   created_at: string;
 }
 
+interface JobForm {
+  job_title: string;
+  company_name: string;
+  job_location: string;
+  job_type: string;
+  salary_range: string;
+  job_description: string;
+  application_email: string;
+  application_url: string;
+}
+
+const INITIAL_JOB_FORM: JobForm = {
+  job_title: '',
+  company_name: '',
+  job_location: 'Remote',
+  job_type: 'full-time',
+  salary_range: '',
+  job_description: '',
+  application_email: '',
+  application_url: '',
+};
+
 const JobPostings = () => {
   const [jobs, setJobs] = useState<JobPosting[]>([]);
   const [filteredJobs, setFilteredJobs] = useState<JobPosting[]>([]);
@@ -69,14 +94,27 @@ const JobPostings = () => {
   const [showDetailsDialog, setShowDetailsDialog] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [statusFilter, setStatusFilter] = useState('all');
+  const [showJobForm, setShowJobForm] = useState(false);
+  const [editingJob, setEditingJob] = useState<JobPosting | null>(null);
+  const [jobForm, setJobForm] = useState<JobForm>(INITIAL_JOB_FORM);
 
   useEffect(() => {
     fetchJobs();
   }, []);
 
+  const applyFilters = useCallback(() => {
+    let filtered = jobs;
+
+    if (statusFilter !== 'all') {
+      filtered = filtered.filter((job) => job.status === statusFilter);
+    }
+
+    setFilteredJobs(filtered);
+  }, [jobs, statusFilter]);
+
   useEffect(() => {
     applyFilters();
-  }, [statusFilter, jobs]);
+  }, [applyFilters]);
 
   const fetchJobs = async () => {
     try {
@@ -88,21 +126,98 @@ const JobPostings = () => {
       if (error) throw error;
       setJobs(data || []);
       setFilteredJobs(data || []);
-    } catch (error: any) {
-      toast.error('Failed to load job postings');
+    } catch (error: unknown) {
+      const description = error instanceof Error ? error.message : 'Please try again.';
+      toast.error('Failed to load job postings', { description });
     } finally {
       setLoading(false);
     }
   };
 
-  const applyFilters = () => {
-    let filtered = jobs;
+  const openCreateForm = () => {
+    setEditingJob(null);
+    setJobForm(INITIAL_JOB_FORM);
+    setShowJobForm(true);
+  };
 
-    if (statusFilter !== 'all') {
-      filtered = filtered.filter((job) => job.status === statusFilter);
+  const openEditForm = (job: JobPosting) => {
+    setEditingJob(job);
+    setJobForm({
+      job_title: job.job_title,
+      company_name: job.company_name,
+      job_location: job.job_location,
+      job_type: job.job_type,
+      salary_range: job.salary_range || '',
+      job_description: job.job_description,
+      application_email: job.application_email,
+      application_url: job.application_url || '',
+    });
+    setShowJobForm(true);
+  };
+
+  const handleSaveJob = async () => {
+    if (!jobForm.job_title || !jobForm.company_name || !jobForm.job_description || !jobForm.application_email) {
+      toast.error('Please complete all required fields');
+      return;
     }
 
-    setFilteredJobs(filtered);
+    try {
+      setLoading(true);
+
+      if (editingJob) {
+        const { error } = await supabase
+          .from('job_postings')
+          .update({
+            job_title: jobForm.job_title,
+            company_name: jobForm.company_name,
+            company_email: jobForm.application_email,
+            job_location: jobForm.job_location,
+            job_type: jobForm.job_type,
+            salary_range: jobForm.salary_range || null,
+            job_description: jobForm.job_description,
+            application_email: jobForm.application_email,
+            application_url: jobForm.application_url || null,
+          })
+          .eq('id', editingJob.id);
+
+        if (error) throw error;
+        toast.success('Job updated successfully');
+      } else {
+        const { error } = await supabase.from('job_postings').insert([
+          {
+            company_name: jobForm.company_name,
+            company_email: jobForm.application_email,
+            company_website: null,
+            job_title: jobForm.job_title,
+            job_location: jobForm.job_location,
+            job_type: jobForm.job_type,
+            salary_range: jobForm.salary_range || null,
+            job_description: jobForm.job_description,
+            requirements: null,
+            benefits: null,
+            application_email: jobForm.application_email,
+            application_url: jobForm.application_url || null,
+            status: 'approved',
+            featured: false,
+          },
+        ]);
+
+        if (error) throw error;
+        toast.success('Job added to the board');
+      }
+
+      setShowJobForm(false);
+      setEditingJob(null);
+      setJobForm(INITIAL_JOB_FORM);
+      fetchJobs();
+    } catch (error: unknown) {
+      const description = error instanceof Error ? error.message : 'Please try again.';
+      toast.error('Unable to save job posting', {
+        description,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const updateJobStatus = async (id: string, status: string) => {
@@ -117,8 +232,9 @@ const JobPostings = () => {
       toast.success(`Job ${status === 'approved' ? 'approved' : 'rejected'} successfully`);
       fetchJobs();
       setShowDetailsDialog(false);
-    } catch (error: any) {
-      toast.error('Failed to update job status');
+    } catch (error: unknown) {
+      const description = error instanceof Error ? error.message : 'Please try again.';
+      toast.error('Failed to update job status', { description });
     }
   };
 
@@ -133,8 +249,9 @@ const JobPostings = () => {
 
       toast.success(`Job ${!featured ? 'featured' : 'unfeatured'} successfully`);
       fetchJobs();
-    } catch (error: any) {
-      toast.error('Failed to update featured status');
+    } catch (error: unknown) {
+      const description = error instanceof Error ? error.message : 'Please try again.';
+      toast.error('Failed to update featured status', { description });
     }
   };
 
@@ -153,8 +270,9 @@ const JobPostings = () => {
       fetchJobs();
       setShowDeleteDialog(false);
       setSelectedJob(null);
-    } catch (error: any) {
-      toast.error('Failed to delete job posting');
+    } catch (error: unknown) {
+      const description = error instanceof Error ? error.message : 'Please try again.';
+      toast.error('Failed to delete job posting', { description });
     }
   };
 
@@ -186,6 +304,10 @@ const JobPostings = () => {
             <h1 className="text-3xl font-bold tracking-tight">Job Postings</h1>
             <p className="text-muted-foreground">Manage job board submissions and postings</p>
           </div>
+          <Button onClick={openCreateForm}>
+            <PlusIcon className="mr-2 h-4 w-4" />
+            Add Job
+          </Button>
         </div>
 
         {/* Stats Cards */}
@@ -307,6 +429,9 @@ const JobPostings = () => {
                           <Button variant="ghost" size="sm" onClick={() => viewDetails(job)}>
                             <Eye className="h-4 w-4" />
                           </Button>
+                          <Button variant="ghost" size="sm" onClick={() => openEditForm(job)}>
+                            <Edit className="h-4 w-4" />
+                          </Button>
                           <Button
                             variant="ghost"
                             size="sm"
@@ -338,6 +463,129 @@ const JobPostings = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Add/Edit Job Dialog */}
+      <Dialog
+        open={showJobForm}
+        onOpenChange={(open) => {
+          setShowJobForm(open);
+          if (!open) {
+            setEditingJob(null);
+            setJobForm(INITIAL_JOB_FORM);
+          }
+        }}
+      >
+        <DialogContent className="max-w-3xl">
+          <DialogHeader>
+            <DialogTitle>{editingJob ? 'Edit Job' : 'Add Job'}</DialogTitle>
+            <DialogDescription>
+              {editingJob
+                ? 'Update the listing details shown on the public jobs board.'
+                : 'Create a new opening with all the essential information.'}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="space-y-2">
+              <Label>Job Title</Label>
+              <Input
+                value={jobForm.job_title}
+                onChange={(e) => setJobForm({ ...jobForm, job_title: e.target.value })}
+                placeholder="Senior Product Manager"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Company Name</Label>
+              <Input
+                value={jobForm.company_name}
+                onChange={(e) => setJobForm({ ...jobForm, company_name: e.target.value })}
+                placeholder="LA121 Consultants"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Location</Label>
+              <Select
+                value={jobForm.job_location}
+                onValueChange={(value) => setJobForm({ ...jobForm, job_location: value })}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Remote">Remote</SelectItem>
+                  <SelectItem value="Hybrid">Hybrid</SelectItem>
+                  <SelectItem value="On-site">On-site</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>Job Type</Label>
+              <Select
+                value={jobForm.job_type}
+                onValueChange={(value) => setJobForm({ ...jobForm, job_type: value })}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="full-time">Full-time</SelectItem>
+                  <SelectItem value="part-time">Part-time</SelectItem>
+                  <SelectItem value="contract">Contract</SelectItem>
+                  <SelectItem value="temporary">Temporary</SelectItem>
+                  <SelectItem value="internship">Internship</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>Salary Range</Label>
+              <Input
+                value={jobForm.salary_range}
+                onChange={(e) => setJobForm({ ...jobForm, salary_range: e.target.value })}
+                placeholder="$80,000 - $95,000"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Application Email</Label>
+              <Input
+                type="email"
+                value={jobForm.application_email}
+                onChange={(e) => setJobForm({ ...jobForm, application_email: e.target.value })}
+                placeholder="talent@company.com"
+              />
+            </div>
+            <div className="space-y-2 md:col-span-2">
+              <Label>Application Link (optional)</Label>
+              <Input
+                type="url"
+                value={jobForm.application_url}
+                onChange={(e) => setJobForm({ ...jobForm, application_url: e.target.value })}
+                placeholder="https://company.com/apply"
+              />
+            </div>
+            <div className="space-y-2 md:col-span-2">
+              <Label>Job Description</Label>
+              <Textarea
+                rows={5}
+                value={jobForm.job_description}
+                onChange={(e) => setJobForm({ ...jobForm, job_description: e.target.value })}
+                placeholder="Outline responsibilities, requirements, and benefits."
+              />
+            </div>
+          </div>
+          <DialogFooter className="flex items-center justify-between gap-4">
+            <div className="text-xs text-muted-foreground">
+              Posting date will be captured automatically when the role is saved.
+            </div>
+            <div className="flex gap-2">
+              <Button variant="outline" onClick={() => setShowJobForm(false)}>
+                Cancel
+              </Button>
+              <Button onClick={handleSaveJob} disabled={loading}>
+                {editingJob ? 'Save Changes' : 'Add Job'}
+              </Button>
+            </div>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Job Details Dialog */}
       <Dialog open={showDetailsDialog} onOpenChange={setShowDetailsDialog}>

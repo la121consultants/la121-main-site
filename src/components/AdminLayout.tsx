@@ -2,6 +2,7 @@ import { ReactNode, useEffect } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAdmin } from '@/hooks/useAdmin';
 import { useAuth } from '@/hooks/useAuth';
+import { useSuperAdmin } from '@/hooks/useSuperAdmin';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
@@ -28,6 +29,7 @@ interface AdminLayoutProps {
 
 const AdminLayout = ({ children }: AdminLayoutProps) => {
   const { isAdmin, loading } = useAdmin();
+  const { isSuperAdmin } = useSuperAdmin();
   const { signOut } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -49,11 +51,12 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
 
   const menuItems = [
     { icon: LayoutDashboard, label: 'Dashboard', path: '/admin/dashboard' },
+    { icon: LayoutDashboard, label: 'Super Admin', path: '/admin/super', superAdminOnly: true },
     { icon: Users, label: 'Website Users', path: '/admin/users' },
     { icon: ClipboardList, label: 'Form Submissions', path: '/admin/submissions' },
     { icon: BarChart3, label: 'Reports', path: '/admin/reports' },
     { icon: Package, label: 'Job Postings', path: '/admin/jobs' },
-    { icon: Shield, label: 'Admin Users', path: '/admin/users-management' },
+    { icon: Shield, label: 'Admin Users', path: '/admin/users-management', superAdminOnly: true },
     { icon: Star, label: 'Reviews', path: '/admin/reviews' },
     { icon: Package, label: 'Services', path: '/admin/services' },
     { icon: FileText, label: 'Blog', path: '/admin/blog' },
@@ -85,10 +88,12 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
         <Separator />
         <ScrollArea className="flex-1 py-4">
           <nav className="space-y-1 px-3">
-            {menuItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = location.pathname === item.path;
-              return (
+            {menuItems
+              .filter((item) => !item.superAdminOnly || isSuperAdmin)
+              .map((item) => {
+                const Icon = item.icon;
+                const isActive = location.pathname === item.path;
+                return (
                 <Link key={item.path} to={item.path}>
                   <Button
                     variant={isActive ? 'secondary' : 'ghost'}
