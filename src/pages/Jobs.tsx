@@ -12,7 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
-import { MapPin, Clock, DollarSign, Star, Search, Plus, Building2, Send } from 'lucide-react';
+import { MapPin, Clock, DollarSign, Star, Search, Plus, Building2, Send, Megaphone } from 'lucide-react';
 import { format } from 'date-fns';
 import { User } from '@supabase/supabase-js';
 
@@ -117,6 +117,23 @@ const Jobs = () => {
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">Job Board</h1>
             <p className="text-xl text-muted-foreground mb-8">Discover career opportunities</p>
+          </div>
+
+          <div className="mb-8">
+            <div className="flex flex-col sm:flex-row items-start gap-4 rounded-xl border border-primary/20 bg-primary/5 p-6 shadow-sm">
+              <div className="p-3 rounded-full bg-primary/10 text-primary">
+                <Megaphone className="h-6 w-6" />
+              </div>
+              <p className="text-lg leading-relaxed text-foreground">
+                If you would like to advertise your jobs on our Jobs Board, please fill in our{' '}
+                <a href="/partnership" className="font-semibold text-primary hover:underline">Partnerships form</a>{' '}
+                or email us at{' '}
+                <a href="mailto:admin@la121consultants.co.uk" className="font-semibold text-primary hover:underline">
+                  admin@la121consultants.co.uk
+                </a>
+                .
+              </p>
+            </div>
           </div>
 
           <Card className="mb-8">
