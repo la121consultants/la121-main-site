@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
+import { useSuperAdmin } from './useSuperAdmin';
 
 export const useAdmin = () => {
   const { user, loading: authLoading } = useAuth();
+  const { isSuperAdmin, loading: superAdminLoading } = useSuperAdmin();
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -11,6 +13,12 @@ export const useAdmin = () => {
     const checkAdminRole = async () => {
       if (!user) {
         setIsAdmin(false);
+        setLoading(false);
+        return;
+      }
+
+      if (isSuperAdmin) {
+        setIsAdmin(true);
         setLoading(false);
         return;
       }
@@ -36,10 +44,10 @@ export const useAdmin = () => {
       }
     };
 
-    if (!authLoading) {
+    if (!authLoading && !superAdminLoading) {
       checkAdminRole();
     }
-  }, [user, authLoading]);
+  }, [user, authLoading, isSuperAdmin, superAdminLoading]);
 
-  return { isAdmin, loading: loading || authLoading };
+  return { isAdmin, loading: loading || authLoading || superAdminLoading };
 };

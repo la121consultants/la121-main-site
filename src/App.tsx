@@ -22,6 +22,7 @@ import Users from "./pages/admin/Users";
 import FormSubmissions from "./pages/admin/FormSubmissions";
 import Reports from "./pages/admin/Reports";
 import JobPostings from "./pages/admin/JobPostings";
+import SuperAdmin from "./pages/admin/SuperAdmin";
 import BookCall from "./pages/BookCall";
 import OrderService from "./pages/OrderService";
 import Partnership from "./pages/Partnership";
@@ -51,6 +52,7 @@ const App = () => (
           <Route path="/dashboard" element={<UserDashboard />} />
           <Route path="/admin" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<Dashboard />} />
+          <Route path="/admin/super" element={<SuperAdmin />} />
           <Route path="/admin/users" element={<Users />} />
           <Route path="/admin/submissions" element={<FormSubmissions />} />
           <Route path="/admin/reports" element={<Reports />} />
