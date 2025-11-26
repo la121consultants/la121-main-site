@@ -110,6 +110,60 @@ export type Database = {
         }
         Relationships: []
       }
+      consultations: {
+        Row: {
+          created_at: string | null
+          duration_minutes: number
+          email: string
+          end_time: string
+          full_name: string
+          google_event_id: string | null
+          id: string
+          message: string | null
+          phone: string | null
+          service_interest: string
+          start_time: string
+          time_zone: string
+          updated_at: string | null
+          zoom_join_url: string | null
+          zoom_meeting_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          duration_minutes?: number
+          email: string
+          end_time: string
+          full_name: string
+          google_event_id?: string | null
+          id?: string
+          message?: string | null
+          phone?: string | null
+          service_interest: string
+          start_time: string
+          time_zone?: string
+          updated_at?: string | null
+          zoom_join_url?: string | null
+          zoom_meeting_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          duration_minutes?: number
+          email?: string
+          end_time?: string
+          full_name?: string
+          google_event_id?: string | null
+          id?: string
+          message?: string | null
+          phone?: string | null
+          service_interest?: string
+          start_time?: string
+          time_zone?: string
+          updated_at?: string | null
+          zoom_join_url?: string | null
+          zoom_meeting_id?: string | null
+        }
+        Relationships: []
+      }
       ebooks: {
         Row: {
           access_type: string | null

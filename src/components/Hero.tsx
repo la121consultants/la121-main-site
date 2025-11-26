@@ -1,7 +1,10 @@
 import AnimatedShaderHero from "@/components/ui/animated-shader-hero";
 import { ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Hero = () => {
+  const navigate = useNavigate();
+
   const scrollToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
@@ -20,7 +23,7 @@ const Hero = () => {
       buttons={{
         primary: {
           text: "Book a Free Strategy Call",
-          onClick: () => scrollToSection("booking")
+          onClick: () => navigate("/book-call")
         },
         secondary: {
           text: "Explore Career Services",

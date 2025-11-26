@@ -50,12 +50,11 @@ const Navbar = () => {
             <Link to="/auth" className="text-secondary hover:text-primary transition-colors font-medium">
               Sign In
             </Link>
-            <Button
-              onClick={() => scrollToSection("booking")}
-              className="bg-primary hover:bg-primary/90 text-white"
-            >
-              Book a Call
-            </Button>
+            <Link to="/book-call">
+              <Button className="bg-primary hover:bg-primary/90 text-white">
+                Book a Call
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -97,12 +96,11 @@ const Navbar = () => {
             <Link to="/auth" className="block text-secondary hover:text-primary transition-colors font-medium py-2" onClick={() => setIsOpen(false)}>
               Sign In
             </Link>
-            <Button
-              onClick={() => scrollToSection("booking")}
-              className="w-full bg-primary hover:bg-primary/90 text-white"
-            >
-              Book a Call
-            </Button>
+            <Link to="/book-call" className="block">
+              <Button className="w-full bg-primary hover:bg-primary/90 text-white" onClick={() => setIsOpen(false)}>
+                Book a Call
+              </Button>
+            </Link>
           </div>
         )}
       </div>
