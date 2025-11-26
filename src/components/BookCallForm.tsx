@@ -1,228 +1,297 @@
-import { useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { toast } from 'sonner';
-import { Calendar, Phone } from 'lucide-react';
+import { useEffect, useMemo, useState } from "react";
+import { DayPicker } from "react-day-picker";
+import { addDays, endOfDay, startOfDay } from "date-fns";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { availabilityConfig } from "@/lib/availability/config";
+import { detectUserTimeZone, formatSlot, generateSlots, Slot } from "@/lib/availability/utils";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { toast } from "sonner";
+import { Calendar, Clock, Globe2, Phone } from "lucide-react";
+import "react-day-picker/dist/style.css";
 
 const services = [
-  'CV Review',
-  'CV Revamp',
-  'Interview Preparation',
-  'Career Portfolio',
-  'LinkedIn Profile Optimization',
-  'Career Coaching',
-  'Other',
+  "CV Revamp",
+  "Interview Prep",
+  "Career Coaching",
+  "Career Portfolio",
+  "Other",
 ];
 
+const durations = [10, 20, 30];
+
 const BookCallForm = () => {
-  const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    phone: '',
-    linkedinUrl: '',
-    howFoundUs: '',
-    serviceInterest: '',
-    preferredDateTime: '',
-    additionalNotes: '',
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
+  const [duration, setDuration] = useState<number>(20);
+  const [selectedSlot, setSelectedSlot] = useState<Slot | null>(null);
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [serviceInterest, setServiceInterest] = useState("");
+  const [message, setMessage] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [confirmation, setConfirmation] = useState<string | null>(null);
+
+  const userTimeZone = detectUserTimeZone();
+
+  const { data: existingBookings } = useQuery({
+    queryKey: ["consultations", selectedDate?.toISOString()],
+    enabled: Boolean(selectedDate),
+    queryFn: async () => {
+      if (!selectedDate) return [];
+      const start = startOfDay(selectedDate).toISOString();
+      const end = endOfDay(selectedDate).toISOString();
+      const { data, error } = await supabase
+        .from("consultations")
+        .select("start_time, end_time")
+        .gte("start_time", start)
+        .lte("start_time", end)
+        .order("start_time", { ascending: true });
+
+      if (error) throw error;
+      return data ?? [];
+    },
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+  const slots = useMemo(
+    () =>
+      selectedDate
+        ? generateSlots(selectedDate, duration, existingBookings ?? [], availabilityConfig)
+        : [],
+    [selectedDate, duration, existingBookings]
+  );
+
+  useEffect(() => {
+    if (selectedSlot && !slots.find((slot) => slot.iso === selectedSlot.iso)) {
+      setSelectedSlot(null);
+    }
+  }, [slots, selectedSlot]);
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!selectedSlot) {
+      toast.error("Please select a time slot.");
+      return;
+    }
+    if (!fullName || !email || !serviceInterest) {
+      toast.error("Name, email, and service interest are required.");
+      return;
+    }
+
+    setSubmitting(true);
+    setConfirmation(null);
 
     try {
-      // First, create or update profile
-      const { data: existingProfile } = await supabase
-        .from('profiles')
-        .select('id')
-        .eq('email', formData.email)
-        .maybeSingle();
+      const { data, error } = await supabase.functions.invoke("book-call", {
+        body: {
+          fullName,
+          email,
+          phone,
+          serviceInterest,
+          message,
+          startTime: selectedSlot.start.toISOString(),
+          durationMinutes: duration,
+          timeZone: userTimeZone || availabilityConfig.timeZone,
+        },
+      });
 
-      let profileId = existingProfile?.id;
-
-      if (!profileId) {
-        const { data: newProfile, error: profileError } = await supabase
-          .from('profiles')
-          .insert({
-            full_name: formData.fullName,
-            email: formData.email,
-            phone: formData.phone,
-            linkedin_url: formData.linkedinUrl,
-            how_found_us: formData.howFoundUs,
-          })
-          .select()
-          .single();
-
-        if (profileError) throw profileError;
-        profileId = newProfile.id;
+      if (error) {
+        throw new Error(error.message || "Booking failed");
       }
 
-      // Then create submission
-      const { error: submissionError } = await supabase.from('form_submissions').insert({
-        profile_id: profileId,
-        form_type: 'client_call',
-        service_selected: formData.serviceInterest,
-        preferred_datetime: formData.preferredDateTime,
-        additional_notes: formData.additionalNotes,
-        status: 'new',
-      });
-
-      if (submissionError) throw submissionError;
-
-      toast.success('Call booking submitted!', {
-        description: 'We will contact you shortly to confirm your appointment.',
-      });
-
-      // Reset form
-      setFormData({
-        fullName: '',
-        email: '',
-        phone: '',
-        linkedinUrl: '',
-        howFoundUs: '',
-        serviceInterest: '',
-        preferredDateTime: '',
-        additionalNotes: '',
-      });
-    } catch (error: any) {
-      toast.error('Submission failed', {
-        description: error.message,
+      setConfirmation(
+        data?.zoomLink
+          ? `Your booking is confirmed. We have emailed details along with your Zoom link.`
+          : `Your booking is confirmed. We will send your meeting details shortly.`
+      );
+      setFullName("");
+      setEmail("");
+      setPhone("");
+      setMessage("");
+      setServiceInterest("");
+      setSelectedSlot(null);
+    } catch (err: any) {
+      toast.error("Unable to complete booking", {
+        description: err.message,
       });
     } finally {
-      setLoading(false);
+      setSubmitting(false);
     }
   };
 
   return (
-    <Card className="max-w-2xl mx-auto">
-      <CardHeader>
-        <div className="flex items-center gap-2 mb-2">
-          <Phone className="h-6 w-6 text-primary" />
-          <CardTitle className="text-2xl">Book a Client Call</CardTitle>
-        </div>
-        <CardDescription>
-          Schedule a consultation to discuss your career goals and how we can help
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <Card className="shadow-lg border-primary/10">
+        <CardHeader>
+          <div className="flex items-center gap-2 mb-2">
+            <Phone className="h-6 w-6 text-primary" />
+            <CardTitle className="text-2xl">Book a Consultation</CardTitle>
+          </div>
+          <CardDescription>
+            Choose a date and time that works for you. All calls run on UK time, but we show your local time where possible.
+          </CardDescription>
+          <div className="flex flex-wrap gap-2 mt-3">
+            <Badge variant="secondary" className="bg-primary/10 text-primary">
+              <Clock className="h-4 w-4 mr-1" /> {duration}-minute slot
+            </Badge>
+            <Badge variant="secondary" className="bg-muted text-secondary">Weekdays: 09:00 - 18:00 UK</Badge>
+            <Badge variant="secondary" className="bg-muted text-secondary">Zoom + Google Calendar invite</Badge>
+          </div>
+        </CardHeader>
+        <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="fullName">Full Name *</Label>
-              <Input
-                id="fullName"
-                required
-                value={formData.fullName}
-                onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                placeholder="John Doe"
+            <div className="space-y-3">
+              <Label>Pick a date</Label>
+              <DayPicker
+                mode="single"
+                selected={selectedDate}
+                onSelect={(date) => setSelectedDate(date)}
+                disabled={{ before: new Date(), after: addDays(new Date(), 30) }}
+                styles={{
+                  head_cell: { color: "#4b5563" },
+                  nav_button: { color: "#111827" },
+                }}
               />
+              <div className="space-y-2">
+                <Label htmlFor="duration">Consultation length</Label>
+                <Select value={duration.toString()} onValueChange={(value) => setDuration(Number(value))}>
+                  <SelectTrigger id="duration">
+                    <SelectValue placeholder="Choose duration" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {durations.map((option) => (
+                      <SelectItem key={option} value={option.toString()}>
+                        {option} minutes
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Globe2 className="h-4 w-4" />
+                <span>Showing times in your timezone: {userTimeZone}</span>
+              </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="email">Email Address *</Label>
-              <Input
-                id="email"
-                type="email"
-                required
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                placeholder="john@example.com"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="phone">Phone Number *</Label>
-              <Input
-                id="phone"
-                type="tel"
-                required
-                value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                placeholder="+44 20 1234 5678"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="linkedinUrl">LinkedIn Profile URL</Label>
-              <Input
-                id="linkedinUrl"
-                value={formData.linkedinUrl}
-                onChange={(e) => setFormData({ ...formData, linkedinUrl: e.target.value })}
-                placeholder="linkedin.com/in/yourprofile"
-              />
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="serviceInterest">Service of Interest *</Label>
-            <Select
-              required
-              value={formData.serviceInterest}
-              onValueChange={(value) => setFormData({ ...formData, serviceInterest: value })}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select a service" />
-              </SelectTrigger>
-              <SelectContent>
-                {services.map((service) => (
-                  <SelectItem key={service} value={service}>
-                    {service}
-                  </SelectItem>
+            <div className="space-y-3">
+              <Label>Available times</Label>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-[320px] overflow-y-auto pr-1">
+                {slots.length === 0 && (
+                  <div className="col-span-3 text-sm text-muted-foreground border rounded-md p-3 bg-muted/40">
+                    No slots for this date. Try another day or adjust the duration.
+                  </div>
+                )}
+                {slots.map((slot) => (
+                  <button
+                    key={slot.iso}
+                    type="button"
+                    onClick={() => setSelectedSlot(slot)}
+                    className={`border rounded-md px-3 py-2 text-sm transition focus:outline-none focus:ring-2 focus:ring-primary/50 ${
+                      selectedSlot?.iso === slot.iso
+                        ? "bg-primary text-white border-primary"
+                        : "bg-white hover:border-primary/50"
+                    }`}
+                  >
+                    {formatSlot(slot, userTimeZone)}
+                  </button>
                 ))}
-              </SelectContent>
-            </Select>
+              </div>
+            </div>
           </div>
+        </CardContent>
+      </Card>
 
-          <div className="space-y-2">
-            <Label htmlFor="preferredDateTime">Preferred Date & Time *</Label>
-            <Input
-              id="preferredDateTime"
-              type="datetime-local"
-              required
-              value={formData.preferredDateTime}
-              onChange={(e) => setFormData({ ...formData, preferredDateTime: e.target.value })}
-            />
+      <Card className="shadow-lg border-primary/10">
+        <CardHeader>
+          <div className="flex items-center gap-2 mb-2">
+            <Calendar className="h-6 w-6 text-primary" />
+            <CardTitle className="text-2xl">Share your details</CardTitle>
           </div>
+          <CardDescription>We use this to tailor the session and send your invite.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {confirmation && (
+            <div className="mb-4 rounded-lg border border-green-300 bg-green-50 text-green-800 p-3 text-sm">
+              {confirmation}
+            </div>
+          )}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="fullName">Full name *</Label>
+                <Input
+                  id="fullName"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  placeholder="Alex Taylor"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="email">Email *</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="alex@example.com"
+                  required
+                />
+              </div>
+            </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="howFoundUs">How did you find us?</Label>
-            <Input
-              id="howFoundUs"
-              value={formData.howFoundUs}
-              onChange={(e) => setFormData({ ...formData, howFoundUs: e.target.value })}
-              placeholder="Google, LinkedIn, Referral, etc."
-            />
-          </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="phone">Phone (optional)</Label>
+                <Input
+                  id="phone"
+                  type="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder="+44 20 1234 5678"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="serviceInterest">Service interest *</Label>
+                <Select value={serviceInterest} onValueChange={setServiceInterest}>
+                  <SelectTrigger id="serviceInterest">
+                    <SelectValue placeholder="Select a service" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {services.map((service) => (
+                      <SelectItem key={service} value={service}>
+                        {service}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="additionalNotes">Additional Notes</Label>
-            <Textarea
-              id="additionalNotes"
-              value={formData.additionalNotes}
-              onChange={(e) => setFormData({ ...formData, additionalNotes: e.target.value })}
-              placeholder="Tell us about your career goals or any specific questions..."
-              rows={4}
-            />
-          </div>
+            <div className="space-y-2">
+              <Label htmlFor="message">Tell us about your goals</Label>
+              <Textarea
+                id="message"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Share your career goals, target roles, or links we should review."
+                rows={4}
+              />
+            </div>
 
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? 'Submitting...' : 'Book Call'}
-          </Button>
-        </form>
-      </CardContent>
-    </Card>
+            <Button type="submit" className="w-full" disabled={submitting}>
+              {submitting ? "Booking your slot..." : "Confirm booking"}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 
