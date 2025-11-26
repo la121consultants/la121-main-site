@@ -40,29 +40,13 @@ const BookCallForm = () => {
 
   const userTimeZone = detectUserTimeZone();
 
-  const { data: existingBookings } = useQuery({
-    queryKey: ["consultations", selectedDate?.toISOString()],
-    enabled: Boolean(selectedDate),
-    queryFn: async () => {
-      if (!selectedDate) return [];
-      const start = startOfDay(selectedDate).toISOString();
-      const end = endOfDay(selectedDate).toISOString();
-      const { data, error } = await supabase
-        .from("consultations")
-        .select("start_time, end_time")
-        .gte("start_time", start)
-        .lte("start_time", end)
-        .order("start_time", { ascending: true });
-
-      if (error) throw error;
-      return data ?? [];
-    },
-  });
+  // Temporarily disabled until consultations table is created
+  const existingBookings: { start_time: string; end_time: string }[] = [];
 
   const slots = useMemo(
     () =>
       selectedDate
-        ? generateSlots(selectedDate, duration, existingBookings ?? [], availabilityConfig)
+        ? generateSlots(selectedDate, duration, existingBookings, availabilityConfig)
         : [],
     [selectedDate, duration, existingBookings]
   );

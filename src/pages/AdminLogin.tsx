@@ -95,7 +95,7 @@ const AdminLogin = () => {
         'has_role',
         {
           _user_id: data.user.id,
-          _role: 'super_admin',
+          _role: 'admin',
         }
       );
 
