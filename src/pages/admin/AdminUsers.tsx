@@ -74,7 +74,7 @@ const AdminUsers = () => {
       const { data, error } = await supabase
         .from('user_roles')
         .select('*')
-        .in('role', ['admin', 'super_admin'])
+        .in('role', ['admin'])
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -238,7 +238,7 @@ const AdminUsers = () => {
                 <TableBody>
                   {adminUsers.map((user) => {
                     const isPrimarySuperAdmin =
-                      user.email?.toLowerCase() === superAdminEmail || user.role === 'super_admin';
+                      user.email?.toLowerCase() === superAdminEmail;
 
                     return (
                       <TableRow key={user.id}>

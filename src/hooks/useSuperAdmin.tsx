@@ -33,7 +33,7 @@ export const useSuperAdmin = () => {
           .from('user_roles')
           .select('role')
           .eq('user_id', user.id)
-          .eq('role', 'super_admin')
+          .eq('role', 'admin')
           .single();
 
         if (error && error.code !== 'PGRST116') {
