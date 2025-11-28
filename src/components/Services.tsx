@@ -3,7 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Briefcase, TrendingUp, Rocket, Crown, Check, Sparkles, GraduationCap, Plus, ChevronRight } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 
 const studentOffer = {
   icon: GraduationCap,
@@ -113,12 +116,68 @@ const addOns = [
   { name: "Career Roadmap Session", price: "£50", category: "Consultation" }
 ];
 
+interface ServiceData {
+  id: string;
+  name: string;
+  stripe_price_id: string | null;
+  price: number;
+}
+
 const Services = () => {
   const [showAddOns, setShowAddOns] = useState(false);
+  const [services, setServices] = useState<ServiceData[]>([]);
+  const [purchasingService, setPurchasingService] = useState<string | null>(null);
 
-  const handleBookNow = () => {
-    const bookingElement = document.getElementById('booking');
-    bookingElement?.scrollIntoView({ behavior: 'smooth' });
+  useEffect(() => {
+    const fetchServices = async () => {
+      const { data } = await supabase
+        .from('services')
+        .select('id, name, stripe_price_id, price')
+        .eq('active', true);
+      
+      if (data) {
+        setServices(data);
+      }
+    };
+    
+    fetchServices();
+  }, []);
+
+  const handleBookNow = async (packageName: string) => {
+    // Find matching service in database
+    const service = services.find(s => 
+      s.name.toLowerCase().includes(packageName.toLowerCase()) ||
+      packageName.toLowerCase().includes(s.name.toLowerCase())
+    );
+
+    if (!service || !service.stripe_price_id) {
+      // Fallback to booking section
+      const bookingElement = document.getElementById('booking');
+      bookingElement?.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+
+    setPurchasingService(service.id);
+
+    try {
+      const { data, error } = await supabase.functions.invoke('create-service-checkout', {
+        body: { 
+          serviceId: service.id,
+          customerEmail: ''
+        },
+      });
+
+      if (error) throw error;
+
+      if (data?.url) {
+        window.open(data.url, '_blank');
+      }
+    } catch (error) {
+      console.error('Checkout error:', error);
+      toast.error('Failed to start checkout. Please try again or contact support.');
+    } finally {
+      setPurchasingService(null);
+    }
   };
 
   return (
@@ -173,12 +232,17 @@ const Services = () => {
                 </div>
                 <Button
                   className="w-full bg-secondary hover:bg-secondary/90 text-white"
-                  onClick={() => {
-                    const bookingSection = document.getElementById('booking');
-                    bookingSection?.scrollIntoView({ behavior: 'smooth' });
-                  }}
+                  onClick={() => handleBookNow(pkg.name)}
+                  disabled={purchasingService !== null}
                 >
-                  Book Now
+                  {purchasingService ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Loading...
+                    </>
+                  ) : (
+                    'Book Now'
+                  )}
                 </Button>
               </CardContent>
             </Card>
@@ -230,7 +294,11 @@ const Services = () => {
                 ))}
               </div>
               <div className="text-center mt-6 pt-4 border-t">
-                <Button onClick={() => { setShowAddOns(false); handleBookNow(); }} size="lg">
+                <Button onClick={() => { 
+                  setShowAddOns(false); 
+                  const bookingElement = document.getElementById('booking');
+                  bookingElement?.scrollIntoView({ behavior: 'smooth' });
+                }} size="lg">
                   <Sparkles className="w-4 h-4 mr-2" />
                   Book a Consultation
                 </Button>

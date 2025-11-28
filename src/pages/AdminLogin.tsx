@@ -101,7 +101,7 @@ const AdminLogin = () => {
 
       const { data: hasSuperAdminRole, error: roleError } = await supabase.rpc('has_role', {
         _user_id: data.user.id,
-        _role: 'super_admin',
+        _role: 'admin',
       });
 
       if (roleError) {

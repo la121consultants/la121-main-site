@@ -122,7 +122,6 @@ const SuperAdmin = () => {
         submissions,
         cvTool,
         bioTool,
-        consultationRes,
         partnershipRes,
         jobRes,
       ] = await Promise.all([
@@ -144,7 +143,6 @@ const SuperAdmin = () => {
           .from('form_submissions')
           .select('id', { count: 'exact', head: true })
           .ilike('service_selected', '%bio%'),
-        supabase.from('consultations').select('*').order('start_time', { ascending: false }),
         supabase
           .from('form_submissions')
           .select(
@@ -164,7 +162,7 @@ const SuperAdmin = () => {
 
       setTrendData(buildTrendData(recentProfiles.data || []));
       setPopularPages(buildPopularPages(submissions.data || []));
-      setConsultations((consultationRes.data as Consultation[]) || []);
+      setConsultations([]);
       setPartnerships((partnershipRes.data as PartnershipSubmission[]) || []);
 
       const jobData = jobRes.data || [];
