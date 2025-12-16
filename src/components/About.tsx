@@ -7,15 +7,26 @@ const About = () => {
       <div className="container px-4 mx-auto">
         <div className="max-w-4xl mx-auto text-center space-y-6">
           <h2 className="text-4xl md:text-5xl font-bold text-secondary">
-            About LA121 Consultants: Your Career Consultant UK Team
+            Your Career Consultant Team and Social Media Marketing Specialists
           </h2>
 
-          <p className="text-lg md:text-xl text-foreground/80 leading-relaxed">
-            Our CV Revamp Service UK combines professional CV writing, interview preparation,
-            and career coaching UK expertise to help you stand out. From graduate CV services
-            to leadership mentoring, our consultants understand what employers want and guide
-            you with tailored job search support at every stage.
-          </p>
+          <div className="space-y-5 text-lg md:text-xl text-foreground/80 leading-relaxed text-left">
+            <p>
+              LA121 Consultants is a results-driven career consulting company helping individuals and businesses stand out, grow, and succeed in an increasingly competitive world of work.
+            </p>
+            
+            <p>
+              We specialise in CV reviews and revamps, interview preparation, career coaching, and job-readiness support — empowering early-career professionals, experienced managers, career changers, and returners to confidently secure roles that align with their skills, goals, and lifestyle.
+            </p>
+            
+            <p>
+              What sets LA121 Consultants apart is our understanding that success today isn't just about a strong CV — it's also about visibility, positioning, and professional presence. Alongside our core career services, we offer Social Media & Marketing Management as an add-on service for businesses, managers, and influencers who want to remain consistent and credible online without sacrificing time or energy.
+            </p>
+            
+            <p>
+              Whether you're building a personal brand, growing a business, or navigating your next career move, LA121 Consultants provides practical, strategic support that delivers clarity, confidence, and results — both on paper and online.
+            </p>
+          </div>
           
           <div className="pt-6">
             <Link to="/about">
