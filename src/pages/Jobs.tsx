@@ -63,6 +63,22 @@ const Jobs = () => {
   useEffect(() => { fetchJobs(); }, []);
   useEffect(() => { filterJobs(); }, [searchTerm, locationFilter, typeFilter, jobs]);
 
+  // Load Careerjet widget script
+  useEffect(() => {
+    const existingScript = document.getElementById('cj-search-box');
+    if (!existingScript) {
+      const script = document.createElement('script');
+      script.id = 'cj-search-box';
+      script.async = true;
+      script.src = 'https://static.careerjet.org/js/all_widget_search_box_3rd_party.min.js?t=' + Date.now();
+      document.body.appendChild(script);
+    }
+    return () => {
+      const script = document.getElementById('cj-search-box');
+      if (script) script.remove();
+    };
+  }, []);
+
   const fetchJobs = async () => {
     try {
       const { data, error } = await supabase.from('job_postings').select('*').eq('status', 'approved')
@@ -117,6 +133,14 @@ const Jobs = () => {
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">Job Board</h1>
             <p className="text-xl text-muted-foreground mb-8">Discover career opportunities</p>
+          </div>
+
+          {/* Careerjet Search Widget */}
+          <div className="mb-8">
+            <div 
+              className="cj-search-box" 
+              data-url="https://widget.careerjet.net/search-box/efee30faabcc35e66d1cbb1c0b38fd86"
+            />
           </div>
 
           <div className="mb-8">
