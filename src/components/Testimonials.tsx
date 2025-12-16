@@ -43,7 +43,7 @@ const testimonials = [
 
 const Testimonials = () => {
   return (
-    <section className="relative py-20 overflow-hidden">
+    <section id="testimonials" className="relative py-20 overflow-hidden">
       {/* Background Image with Overlay */}
       <div 
         className="absolute inset-0 bg-cover bg-center"
@@ -56,11 +56,10 @@ const Testimonials = () => {
       <div className="container relative z-10 px-4 mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-secondary mb-4">
-            What Our Career Coaching UK Clients Say
+            Why LA121 Works
           </h2>
           <p className="text-lg text-muted-foreground">
-            Hear from professionals and graduates who chose our CV revamp service UK for professional CV
-            writing, interview preparation, and job search support.
+            Real results from professionals who transformed their careers with our support.
           </p>
         </div>
         

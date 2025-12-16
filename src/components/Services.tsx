@@ -185,11 +185,10 @@ const Services = () => {
       <div className="container px-4 mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-secondary mb-4">
-            One-to-One Career Coaching UK Services
+            How We Help
           </h2>
           <p className="text-lg text-muted-foreground">
-            Choose from tailored CV revamp service UK packages with professional CV writing,
-            interview preparation, graduate CV services, and hands-on job search support.
+            Tailored packages to land more interviews, negotiate better offers, and advance faster.
           </p>
         </div>
         

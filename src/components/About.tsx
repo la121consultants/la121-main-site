@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 
 const About = () => {
   return (
-    <section className="py-20 bg-muted/30">
+    <section id="about" className="py-20 bg-muted/30">
       <div className="container px-4 mx-auto">
         <div className="max-w-4xl mx-auto text-center space-y-6">
           <h2 className="text-4xl md:text-5xl font-bold text-secondary">
-            Your Career Consultant Team and Social Media Marketing Specialists
+            About LA121 Consultants
           </h2>
 
           <div className="space-y-5 text-lg md:text-xl text-foreground/80 leading-relaxed text-left">
