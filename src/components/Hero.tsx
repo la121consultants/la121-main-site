@@ -26,8 +26,8 @@ const Hero = () => {
           onClick: () => navigate("/book-call")
         },
         secondary: {
-          text: "Explore Career Services",
-          onClick: () => scrollToSection("career-suite")
+          text: "Explore Services",
+          onClick: () => scrollToSection("services")
         }
       }}
       logoCloud={{

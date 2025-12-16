@@ -60,7 +60,7 @@ const highlights = [
 
 const RealCareerTransformations = () => {
   return (
-    <section className="relative py-24 bg-gradient-to-b from-background via-background/95 to-muted/30 overflow-hidden">
+    <section id="real-career-transformations" className="relative py-24 bg-gradient-to-b from-background via-background/95 to-muted/30 overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute -top-32 -right-20 w-72 h-72 bg-primary/20 blur-3xl" />
         <div className="absolute -bottom-20 -left-20 w-72 h-72 bg-secondary/20 blur-3xl" />
@@ -69,13 +69,13 @@ const RealCareerTransformations = () => {
       <div className="container relative z-10 px-4 mx-auto space-y-12">
         <div className="text-center max-w-3xl mx-auto space-y-4">
           <p className="inline-flex items-center gap-2 px-4 py-1 rounded-full border border-border/40 bg-card/80 text-sm font-semibold uppercase tracking-wider text-primary">
-            <Sparkles className="w-4 h-4" /> Real Career Transformations
+            <Sparkles className="w-4 h-4" /> Success Stories
           </p>
           <h2 className="text-4xl md:text-5xl font-bold text-secondary">
-            Case studies built to earn trust with every detail
+            Real results, real transformations
           </h2>
           <p className="text-lg text-muted-foreground">
-            These snapshots show how LA121 Consultants pairs strategy, design, and accountability to unlock life-changing opportunities.
+            See how we've helped professionals land roles that match their ambitions.
           </p>
         </div>
 

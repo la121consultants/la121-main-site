@@ -10,11 +10,10 @@ const CareerSuite = () => {
       <div className="container px-4 mx-auto relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Explore the LA121 Career Suite for CV Revamp Service UK
+            AI-Powered Career Tools
           </h2>
           <p className="text-xl text-white/90">
-            Your all-in-one hub for professional CV writing, graduate CV services, and interview
-            preparation powered by AI-driven tools.
+            Smart tools to optimise your CV, prepare for interviews, and track your job search progress.
           </p>
         </div>
         

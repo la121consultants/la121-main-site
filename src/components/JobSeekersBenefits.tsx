@@ -45,14 +45,13 @@ const JobSeekersBenefits = () => {
       <div className="container px-4 mx-auto">
         <div className="max-w-3xl mx-auto text-center mb-12">
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-primary">
-            Why Job Seekers Choose LA121 Consultants
+            Who We Support
           </p>
           <h2 className="text-4xl md:text-5xl font-bold text-secondary mt-4">
-            Results-focused support with real human expertise
+            Built for ambitious job seekers
           </h2>
           <p className="text-lg text-muted-foreground mt-6">
-            Every benefit is engineered to remove friction from your job search so you can move from application to offer with
-            confidence and clarity.
+            Whether you're a graduate, career changer, or experienced professional—we remove the friction so you can move forward.
           </p>
         </div>
 

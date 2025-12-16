@@ -19,11 +19,10 @@ const Booking = () => {
               <Calendar className="w-12 h-12 text-primary" />
             </div>
             <h2 className="text-4xl md:text-5xl font-bold text-secondary mb-6">
-              Book Your Free Career Consultant UK Strategy Call
+              Get Started Today
             </h2>
             <p className="text-lg text-muted-foreground mb-8">
-              Use this 10-minute call to map out CV revamp service UK needs, interview preparation, graduate CV
-              services, or wider job search support — no obligation, just expert guidance.
+              Book a free 10-minute strategy call to discuss your goals and discover the right path forward.
             </p>
           </div>
 
