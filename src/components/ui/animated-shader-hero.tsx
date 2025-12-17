@@ -473,11 +473,11 @@ void main(){gl_Position=position;}`;
           
           {/* CTA Buttons with Animation */}
           {buttons && (
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10 animate-fade-in-up animation-delay-800">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10 animate-fade-in-up animation-delay-800" style={{ opacity: 1, animation: 'fade-in-up 0.8s ease-out 0.8s forwards' }}>
               {buttons.primary && (
                 <button 
                   onClick={buttons.primary.onClick}
-                  className="px-8 py-4 bg-primary hover:bg-primary/90 text-primary-foreground rounded-full font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-glow"
+                  className="px-8 py-4 bg-primary hover:bg-primary/90 text-white rounded-full font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-glow"
                 >
                   {buttons.primary.text}
                 </button>
@@ -485,7 +485,7 @@ void main(){gl_Position=position;}`;
               {buttons.secondary && (
                 <button 
                   onClick={buttons.secondary.onClick}
-                  className="px-8 py-4 bg-primary/10 hover:bg-primary/20 border border-primary/30 hover:border-primary/50 text-foreground rounded-full font-semibold text-lg transition-all duration-300 hover:scale-105 backdrop-blur-sm"
+                  className="px-8 py-4 bg-white/10 hover:bg-white/20 border border-white/30 hover:border-white/50 text-white rounded-full font-semibold text-lg transition-all duration-300 hover:scale-105 backdrop-blur-sm"
                 >
                   {buttons.secondary.text}
                 </button>
