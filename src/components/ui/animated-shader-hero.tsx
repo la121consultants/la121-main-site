@@ -434,7 +434,7 @@ void main(){gl_Position=position;}`;
       />
       
       {/* Hero Content Overlay */}
-      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-white px-4 pb-36 md:pb-44">
+      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-white px-4 pb-48 md:pb-56">
         {/* Trust Badge */}
         {trustBadge && (
           <div className="mb-8 animate-fade-in-down">
