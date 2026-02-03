@@ -52,7 +52,7 @@ const Footer = () => {
               admin@la121consultants.co.uk
             </a>
             <a href="https://tinyurl.com/la121channel" target="_blank" rel="noopener noreferrer" className="text-white/80 hover:text-primary transition-colors text-sm">
-              WhatsApp Community
+              Join our WhatsApp Channel
             </a>
           </div>
         </div>
