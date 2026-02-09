@@ -27,6 +27,7 @@ import BookCall from "./pages/BookCall";
 import OrderService from "./pages/OrderService";
 import Partnership from "./pages/Partnership";
 import Jobs from "./pages/Jobs";
+import WebsiteBuildingServices from "./pages/WebsiteBuildingServices";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 
@@ -48,6 +49,7 @@ const App = () => (
           <Route path="/order-service" element={<OrderService />} />
           <Route path="/partnership" element={<Partnership />} />
           <Route path="/jobs" element={<Jobs />} />
+          <Route path="/website-building-services" element={<WebsiteBuildingServices />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/dashboard" element={<UserDashboard />} />
           <Route path="/admin" element={<AdminLogin />} />
