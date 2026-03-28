@@ -89,7 +89,9 @@ const DigitalMarketingProgram = () => {
             <div className="flex flex-col sm:flex-row gap-4">
               <Button asChild size="lg">
                 <a
-                  href="mailto:admin@la121consultants.co.uk?subject=Digital%20Marketing%20Work%20Experience%20Program%20Signup"
+                  href="https://buy.stripe.com/3cIfZhgJD5kubjlf6Kdwc0I"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Join the Program Today
                 </a>

@@ -180,6 +180,13 @@ const Navbar = () => {
             <Link to="/jobs" className="text-secondary hover:text-primary transition-colors font-medium">
               Jobs
             </Link>
+
+            <button
+              onClick={() => scrollToSection("contact")}
+              className="text-secondary hover:text-primary transition-colors font-medium"
+            >
+              Contact Us
+            </button>
             
             <NavDropdown label="About" items={aboutItems} onClose={closeMenu} />
             
@@ -225,6 +232,13 @@ const Navbar = () => {
             >
               Jobs
             </Link>
+
+            <button
+              onClick={() => scrollToSection("contact")}
+              className="block w-full text-left py-3 text-secondary hover:text-primary transition-colors font-medium border-b border-border/50"
+            >
+              Contact Us
+            </button>
             
             <MobileDropdown label="About" items={aboutItems} onItemClick={closeMenu} />
             
