@@ -110,6 +110,33 @@ export type Database = {
         }
         Relationships: []
       }
+      ebook_downloads: {
+        Row: {
+          created_at: string | null
+          customer_email: string | null
+          downloaded_at: string | null
+          ebook_title: string
+          id: string
+          stripe_session_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          customer_email?: string | null
+          downloaded_at?: string | null
+          ebook_title: string
+          id?: string
+          stripe_session_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          customer_email?: string | null
+          downloaded_at?: string | null
+          ebook_title?: string
+          id?: string
+          stripe_session_id?: string | null
+        }
+        Relationships: []
+      }
       ebooks: {
         Row: {
           access_type: string | null
@@ -321,6 +348,36 @@ export type Database = {
           status?: string | null
           updated_at?: string | null
           views_count?: number | null
+        }
+        Relationships: []
+      }
+      page_views: {
+        Row: {
+          created_at: string | null
+          id: string
+          page_path: string
+          page_title: string | null
+          referrer: string | null
+          session_id: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          page_path: string
+          page_title?: string | null
+          referrer?: string | null
+          session_id?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          page_path?: string
+          page_title?: string | null
+          referrer?: string | null
+          session_id?: string | null
+          user_agent?: string | null
         }
         Relationships: []
       }
