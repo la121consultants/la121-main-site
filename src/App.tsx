@@ -30,8 +30,14 @@ import Jobs from "./pages/Jobs";
 import WebsiteBuildingServices from "./pages/WebsiteBuildingServices";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
+import { usePageTracking } from "./hooks/usePageTracking";
 
 const queryClient = new QueryClient();
+
+const PageTracker = () => {
+  usePageTracking();
+  return null;
+};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -39,6 +45,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <PageTracker />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/about" element={<About />} />
