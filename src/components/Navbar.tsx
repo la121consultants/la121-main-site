@@ -142,6 +142,7 @@ const Navbar = () => {
     { label: "Career Coaching", onClick: () => scrollToSection("services") },
     { label: "Graduate Support", onClick: () => scrollToSection("services") },
     { label: "Career Accelerator Programme", href: "/work-experience" },
+    { label: "Website Building — From £499", href: "/website-building" },
   ];
 
   const careerToolsItems: DropdownItem[] = [

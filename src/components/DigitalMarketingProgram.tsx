@@ -131,6 +131,26 @@ const DigitalMarketingProgram = () => {
                 </a>
               </Button>
             </div>
+
+            {/* Techsage Partner Link */}
+            <div className="mt-6 bg-muted/50 border border-border rounded-xl p-5">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-xl">🤝</span>
+                <h3 className="text-lg font-bold text-secondary">Project Management Training & More</h3>
+              </div>
+              <p className="text-muted-foreground text-sm mb-3">
+                Looking for project management training, IT courses, or professional development? Visit our partner <strong className="text-secondary">Techsage Consulting</strong> for a wide range of training programmes.
+              </p>
+              <Button asChild variant="outline" size="sm">
+                <a
+                  href="https://www.techsageconsulting.uk"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Visit Techsage Consulting →
+                </a>
+              </Button>
+            </div>
           </div>
 
           {/* Video Testimonial */}
