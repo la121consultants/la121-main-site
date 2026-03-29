@@ -62,7 +62,7 @@ const DigitalMarketingProgram = () => {
 
             <div className="bg-primary/10 rounded-xl p-5 mb-6">
               <p className="text-secondary font-bold text-lg mb-1">
-                Only £299 <span className="text-muted-foreground font-normal text-sm line-through">£1,000</span>
+                Only £249 <span className="text-muted-foreground font-normal text-sm line-through">£1,000</span>
               </p>
               <p className="text-muted-foreground text-sm">
                 Minimum 2 months, fully flexible. All you need is a laptop and internet.
