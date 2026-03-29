@@ -12,7 +12,7 @@ const About = () => {
 
           <div className="space-y-5 text-lg md:text-xl text-foreground/80 leading-relaxed text-left">
             <p>
-              LA121 Consultants is a results-driven career consulting company helping individuals and businesses stand out, grow, and succeed in an increasingly competitive world of work.
+              LA121 Consultants is a results-driven career consulting company based in London, helping individuals and businesses stand out, grow, and succeed in an increasingly competitive world of work.
             </p>
             
             <p>
