@@ -111,7 +111,8 @@ const DigitalMarketingProgram = () => {
               </div>
               <p className="text-muted-foreground mb-3">
                 Want personalised, hands-on training? Our <strong className="text-secondary">1-to-1 Digital Marketing Course</strong> gives you 
-                dedicated mentorship tailored to your goals — whether you're launching a business, building a personal brand, or levelling up your career.
+                dedicated mentorship tailored to your goals — whether you're launching a business, building a personal brand, or levelling up your career. 
+                <strong className="text-secondary">Fully remote</strong>, fits around your schedule including <strong className="text-secondary">evenings and weekends</strong>, delivered over <strong className="text-secondary">6–8 weeks</strong>.
               </p>
               <div className="flex items-center gap-3 mb-4">
                 <p className="text-secondary font-bold text-2xl">
