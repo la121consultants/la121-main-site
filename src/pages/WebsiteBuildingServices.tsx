@@ -37,12 +37,12 @@ const WebsiteBuildingServices = () => {
             Website Building Services
           </p>
           <h1 className="text-4xl md:text-5xl font-bold text-foreground">
-            Website Building Services
+            Professional Website Building — From £499
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
-            We build clean, modern, and mobile-friendly websites for individuals and businesses across the UK.
-            Our focus is on simple, affordable, and professional sites that make it easy for you to be found
-            online and trusted by your audience.
+            We build clean, modern, and mobile-friendly websites for businesses, students, freelancers, and entrepreneurs across the UK.
+            Get a professional online presence without the complexity. Fill out our enquiry form or email{" "}
+            <a href="mailto:admin@la121consultants.co.uk" className="text-primary font-semibold hover:underline">admin@la121consultants.co.uk</a>.
           </p>
         </div>
       </section>
@@ -65,11 +65,10 @@ const WebsiteBuildingServices = () => {
             <div className="p-6 rounded-xl border border-border bg-card shadow-sm">
               <h3 className="text-xl font-semibold text-foreground mb-2">Our Website Packages</h3>
               <p className="text-muted-foreground">
-                Website builds start from <span className="font-semibold text-foreground">£180</span>.
+                Website builds start from <span className="font-semibold text-foreground">£499</span>.
               </p>
               <p className="text-muted-foreground mt-2">
-                £180 includes a basic one-page website, with custom quotes available for larger or more
-                complex sites.
+                Perfect for businesses, students, freelancers, and entrepreneurs who need a professional online presence. Custom quotes available for larger or more complex sites.
               </p>
             </div>
             <div className="p-6 rounded-xl border border-border bg-card shadow-sm md:col-span-2">
