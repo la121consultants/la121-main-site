@@ -193,7 +193,7 @@ const Services = () => {
         </div>
 
         {/* CV Revamp CTA - Top */}
-        <div className="max-w-4xl mx-auto mb-12 text-center">
+        <div className="max-w-4xl mx-auto mb-8 text-center">
           <a
             href="https://buy.stripe.com/cN24knbWnbQQgak7sL"
             target="_blank"
@@ -209,6 +209,30 @@ const Services = () => {
                 Only £50 for a Limited Time!
               </p>
               <p className="text-sm font-semibold mt-2 opacity-80">Click here to get started →</p>
+            </div>
+          </a>
+        </div>
+
+        {/* Apply for Jobs Service CTA */}
+        <div className="max-w-4xl mx-auto mb-12 text-center">
+          <a
+            href="https://buy.stripe.com/14A6oHgJD5kuafh3o2dwc0F"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block"
+          >
+            <div className="bg-gradient-to-r from-secondary to-secondary/90 hover:from-secondary/95 hover:to-secondary/85 text-white rounded-2xl px-8 py-8 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer border-2 border-primary/30">
+              <p className="text-2xl md:text-3xl font-extrabold mb-2">
+                📋 Too Busy to Apply for Jobs? We'll Do It for You!
+              </p>
+              <p className="text-base md:text-lg mb-3 opacity-90">
+                We apply on your behalf using your email — you keep full oversight of every application sent. Includes a <strong>free CV review & revamp</strong>.
+              </p>
+              <p className="text-xl md:text-2xl font-bold">
+                <span className="line-through opacity-60">£599</span>{" "}
+                Only £299 — Limited Time Offer!
+              </p>
+              <p className="text-sm font-semibold mt-2 opacity-80">Get started now →</p>
             </div>
           </a>
         </div>
