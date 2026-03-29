@@ -257,6 +257,26 @@ const Services = () => {
           </div>
         </div>
 
+        {/* CV Revamp CTA */}
+        <div className="max-w-3xl mx-auto mb-16 text-center">
+          <a
+            href="https://buy.stripe.com/cN24knbWnbQQgak7sL"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block w-full md:w-auto"
+          >
+            <Button
+              size="lg"
+              className="w-full md:w-auto bg-yellow-400 hover:bg-yellow-500 text-secondary font-bold text-lg px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+              asChild
+            >
+              <span>
+                🚀 Get Your CV Revamped Today — ATS Optimised | <span className="line-through opacity-70">£99</span> Only £50 for a Limited Time!
+              </span>
+            </Button>
+          </a>
+        </div>
+
         {/* Optional Add-Ons - Compact View */}
         <div className="max-w-4xl mx-auto text-center">
           <Dialog open={showAddOns} onOpenChange={setShowAddOns}>

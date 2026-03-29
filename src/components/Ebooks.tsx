@@ -85,17 +85,17 @@ const Ebooks = () => {
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full mb-6">
             <BookOpen className="w-5 h-5 text-primary" />
-            <span className="text-sm font-medium text-primary">Free Resources</span>
+            <span className="text-sm font-medium text-primary">Career Ebooks</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Free UK Interview Preparation & Job Search Guides
+            UK Interview Preparation & Job Search Guides
           </h2>
           <p className="text-lg text-white/80">
-            Download expert resources curated by our career coaching UK team to boost professional CV
-            writing, interview preparation, and job search support.
+            Expert ebooks curated by our career coaching UK team to boost your professional CV
+            writing, interview preparation, and job search success.
           </p>
           <p className="text-accent font-semibold mt-2">
-            🎁 Free for a limited time — grab yours today!
+            📚 Instant download after purchase — invest in your career today!
           </p>
         </div>
 
