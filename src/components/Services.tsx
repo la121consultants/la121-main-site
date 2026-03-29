@@ -191,6 +191,27 @@ const Services = () => {
             Tailored packages to land more interviews, negotiate better offers, and advance faster.
           </p>
         </div>
+
+        {/* CV Revamp CTA - Top */}
+        <div className="max-w-4xl mx-auto mb-12 text-center">
+          <a
+            href="https://buy.stripe.com/cN24knbWnbQQgak7sL"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block"
+          >
+            <div className="bg-yellow-400 hover:bg-yellow-500 text-secondary rounded-2xl px-8 py-8 shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer">
+              <p className="text-2xl md:text-3xl font-extrabold mb-2">
+                🚀 Get Your CV Revamped Today — ATS Optimised
+              </p>
+              <p className="text-xl md:text-2xl font-bold">
+                <span className="line-through opacity-60">£99</span>{" "}
+                Only £50 for a Limited Time!
+              </p>
+              <p className="text-sm font-semibold mt-2 opacity-80">Click here to get started →</p>
+            </div>
+          </a>
+        </div>
         
         {/* Main Packages */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto mb-10">
@@ -257,27 +278,6 @@ const Services = () => {
           </div>
         </div>
 
-        {/* CV Revamp CTA */}
-        <div className="max-w-3xl mx-auto mb-16 text-center">
-          <a
-            href="https://buy.stripe.com/cN24knbWnbQQgak7sL"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block w-full md:w-auto"
-          >
-            <Button
-              size="lg"
-              className="w-full md:w-auto bg-yellow-400 hover:bg-yellow-500 text-secondary font-bold text-lg px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-              asChild
-            >
-              <span>
-                🚀 Get Your CV Revamped Today — ATS Optimised | <span className="line-through opacity-70">£99</span> Only £50 for a Limited Time!
-              </span>
-            </Button>
-          </a>
-        </div>
-
-        {/* Optional Add-Ons - Compact View */}
         <div className="max-w-4xl mx-auto text-center">
           <Dialog open={showAddOns} onOpenChange={setShowAddOns}>
             <DialogTrigger asChild>
