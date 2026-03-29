@@ -102,6 +102,34 @@ const DigitalMarketingProgram = () => {
                 </a>
               </Button>
             </div>
+
+            {/* 1-to-1 Digital Marketing Course */}
+            <div className="mt-8 bg-gradient-to-r from-primary/15 to-accent/15 border-2 border-primary rounded-2xl p-6">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-2xl">🎯</span>
+                <h3 className="text-xl font-bold text-secondary">1-to-1 Digital Marketing Course</h3>
+              </div>
+              <p className="text-muted-foreground mb-3">
+                Want personalised, hands-on training? Our <strong className="text-secondary">1-to-1 Digital Marketing Course</strong> gives you 
+                dedicated mentorship tailored to your goals — whether you're launching a business, building a personal brand, or levelling up your career.
+              </p>
+              <div className="flex items-center gap-3 mb-4">
+                <p className="text-secondary font-bold text-2xl">
+                  Only £499
+                </p>
+                <span className="text-muted-foreground font-normal text-base line-through">£1,500</span>
+                <span className="bg-primary text-primary-foreground text-xs font-bold px-2 py-1 rounded-full">SAVE 67%</span>
+              </div>
+              <Button asChild size="lg" className="w-full sm:w-auto">
+                <a
+                  href="https://buy.stripe.com/cNiaEX50V6oy1ILbUydwc0J"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Enrol Now — Limited Offer
+                </a>
+              </Button>
+            </div>
           </div>
 
           {/* Video Testimonial */}
