@@ -176,6 +176,9 @@ const Navbar = () => {
             </Link>
             
             <NavDropdown label="Services" items={servicesItems} onClose={closeMenu} />
+            <Link to="/work-experience" className="text-secondary hover:text-primary transition-colors font-medium">
+              Work Experience
+            </Link>
             <NavDropdown label="Career Tools" items={careerToolsItems} onClose={closeMenu} />
             
             <Link to="/jobs" className="text-secondary hover:text-primary transition-colors font-medium">
@@ -224,6 +227,13 @@ const Navbar = () => {
             </Link>
             
             <MobileDropdown label="Services" items={servicesItems} onItemClick={closeMenu} />
+            <Link
+              to="/work-experience"
+              className="block py-3 text-secondary hover:text-primary transition-colors font-medium border-b border-border/50"
+              onClick={closeMenu}
+            >
+              Work Experience
+            </Link>
             <MobileDropdown label="Career Tools" items={careerToolsItems} onItemClick={closeMenu} />
             
             <Link 
