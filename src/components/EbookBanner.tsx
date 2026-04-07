@@ -21,18 +21,41 @@ const EbookBanner = () => {
     setLoading(true);
 
     try {
-      const { error } = await supabase.from("form_submissions").insert({
-        form_type: "free_ebook_international",
-        additional_notes: JSON.stringify({
-          name: form.name,
-          email: form.email,
-          phone: form.phone,
-          ebook: "Free International Students Career Guide",
-        }),
-        status: "new",
-      });
+      // Find or create a profile for this person
+      const { data: existingProfile } = await supabase
+        .from("profiles")
+        .select("id")
+        .eq("email", form.email)
+        .maybeSingle();
 
-      if (error) throw error;
+      let profileId = existingProfile?.id;
+
+      if (!profileId) {
+        const { data: newProfile, error: profileError } = await supabase
+          .from("profiles")
+          .insert({
+            full_name: form.name,
+            email: form.email,
+            phone: form.phone,
+            how_found_us: "Free Ebook Banner",
+          })
+          .select()
+          .single();
+
+        if (profileError) throw profileError;
+        profileId = newProfile.id;
+      }
+
+      const { error: submissionError } = await supabase
+        .from("form_submissions")
+        .insert({
+          profile_id: profileId,
+          form_type: "free_ebook_international",
+          additional_notes: `Free ebook download request\nName: ${form.name}\nEmail: ${form.email}\nPhone: ${form.phone}`,
+          status: "new",
+        });
+
+      if (submissionError) throw submissionError;
 
       setSubmitted(true);
     } catch (err) {
