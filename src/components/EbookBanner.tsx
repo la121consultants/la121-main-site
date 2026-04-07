@@ -21,10 +21,10 @@ const EbookBanner = () => {
     window.open(EBOOK_DOWNLOAD_URL, "_blank", "noopener,noreferrer");
     setSubmitted(true);
 
-    // Save lead + send admin email via edge function (service role bypasses RLS)
+    // Notify admin — send-ebook-email handles DB save + email
     supabase.functions
       .invoke("send-ebook-email", { body: { name: form.name, email: form.email } })
-      .catch((err) => console.error("Lead save failed:", err));
+      .catch((err) => console.error("Admin notification failed:", err));
   };
 
   return (
