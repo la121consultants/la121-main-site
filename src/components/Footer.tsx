@@ -60,6 +60,16 @@ const Footer = () => {
         <div className="border-t border-white/10 pt-8 text-center text-white/60 text-sm">
           <p>&copy; {new Date().getFullYear()} LA121 Consultants. All rights reserved.</p>
           <p className="mt-2">Built with ❤️ by LA121 Consultants</p>
+          <p className="mt-2">
+            <a
+              href="https://drive.google.com/file/d/14R05lJRpU6LlUONPYfmlqMw2yEuhCRn4/view?usp=drive_link"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary transition-colors"
+            >
+              Privacy Policy
+            </a>
+          </p>
         </div>
       </div>
     </footer>
