@@ -55,7 +55,8 @@ const EbookBanner = () => {
     e.preventDefault();
     if (!form.email) return;
 
-    // Show download immediately — save to DB in the background
+    // Open the download immediately in a new tab, then show the success state
+    window.open(EBOOK_DOWNLOAD_URL, "_blank", "noopener,noreferrer");
     setSubmitted(true);
     saveInBackground(form.name, form.email);
   };
@@ -157,12 +158,16 @@ const EbookBanner = () => {
             </p>
             <a
               href={EBOOK_DOWNLOAD_URL}
-              download
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-white text-red-600 font-bold px-8 py-3 rounded-lg hover:bg-red-50 transition-colors shadow-lg text-sm sm:text-base"
             >
               <Download className="w-5 h-5" />
-              Download Free Ebook
+              Click Here to Download
             </a>
+            <p className="mt-3 text-red-200 text-xs">
+              If the download didn't start automatically, click the button above.
+            </p>
           </div>
         )}
       </div>
