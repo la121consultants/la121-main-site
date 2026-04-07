@@ -35,7 +35,7 @@ import {
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { useSuperAdmin } from '@/hooks/useSuperAdmin';
-import { Download, BarChart3, ShieldCheck, Users, Briefcase, PhoneCall } from 'lucide-react';
+import { Download, BarChart3, ShieldCheck, Users, Briefcase, PhoneCall, BookOpen } from 'lucide-react';
 
 interface Consultation {
   id: string;
@@ -47,6 +47,17 @@ interface Consultation {
   end_time: string;
   zoom_join_url: string | null;
   duration_minutes?: number;
+}
+
+interface EbookLead {
+  id: string;
+  created_at: string;
+  status: string;
+  profiles: {
+    full_name: string;
+    email: string;
+    phone: string | null;
+  } | null;
 }
 
 interface PartnershipSubmission {
@@ -79,6 +90,7 @@ const sectionLinks = [
   { id: 'analytics', label: 'Website Analytics' },
   { id: 'strategy', label: 'Strategy Calls' },
   { id: 'partnerships', label: 'Partnerships' },
+  { id: 'ebook-leads', label: 'Free Ebook Leads' },
   { id: 'jobs', label: 'Jobs Board' },
 ];
 
@@ -98,6 +110,7 @@ const SuperAdmin = () => {
   const [consultationFilters, setConsultationFilters] = useState({ start: '', end: '' });
   const [partnerships, setPartnerships] = useState<PartnershipSubmission[]>([]);
   const [partnershipStatus, setPartnershipStatus] = useState('all');
+  const [ebookLeads, setEbookLeads] = useState<EbookLead[]>([]);
   const [jobSnapshot, setJobSnapshot] = useState({ total: 0, approved: 0, pending: 0, featured: 0 });
 
   useEffect(() => {
@@ -123,6 +136,7 @@ const SuperAdmin = () => {
         cvTool,
         bioTool,
         partnershipRes,
+        ebookRes,
         jobRes,
       ] = await Promise.all([
         supabase.from('profiles').select('id', { count: 'exact', head: true }),
@@ -150,6 +164,11 @@ const SuperAdmin = () => {
           )
           .eq('form_type', 'partnership')
           .order('created_at', { ascending: false }),
+        supabase
+          .from('form_submissions')
+          .select('id, status, created_at, profiles:profile_id(full_name, email, phone)')
+          .eq('form_type', 'free_ebook_international')
+          .order('created_at', { ascending: false }),
         supabase.from('job_postings').select('status, featured'),
       ]);
 
@@ -164,6 +183,7 @@ const SuperAdmin = () => {
       setPopularPages(buildPopularPages(submissions.data || []));
       setConsultations([]);
       setPartnerships((partnershipRes.data as PartnershipSubmission[]) || []);
+      setEbookLeads((ebookRes.data as EbookLead[]) || []);
 
       const jobData = jobRes.data || [];
       setJobSnapshot({
@@ -281,6 +301,23 @@ const SuperAdmin = () => {
     }
 
     exportToCsv(rows, 'strategy-calls.csv');
+  };
+
+  const exportEbookLeads = () => {
+    const rows = ebookLeads.map((lead) => ({
+      Name: lead.profiles?.full_name || 'Unknown',
+      Email: lead.profiles?.email || 'Unknown',
+      Phone: lead.profiles?.phone || 'Not provided',
+      Status: lead.status,
+      Submitted: format(new Date(lead.created_at), 'PPpp'),
+    }));
+
+    if (rows.length === 0) {
+      toast.message('No ebook leads to export');
+      return;
+    }
+
+    exportToCsv(rows, 'free-ebook-leads.csv');
   };
 
   const exportPartnerships = () => {
@@ -614,6 +651,69 @@ const SuperAdmin = () => {
                         </Select>
                       </TableCell>
                       <TableCell>{format(new Date(submission.created_at), 'PP')}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </section>
+
+        <section id="ebook-leads" className="space-y-4">
+          <div className="flex items-center gap-3">
+            <BookOpen className="h-5 w-5 text-red-600" />
+            <div>
+              <h2 className="text-xl font-semibold">Free Ebook Leads — International Students</h2>
+              <p className="text-muted-foreground text-sm">Name, email and phone of every international student who downloaded the free ebook.</p>
+            </div>
+          </div>
+
+          <Card>
+            <CardHeader className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+              <div>
+                <CardTitle>Leads ({ebookLeads.length})</CardTitle>
+                <CardDescription>All submissions from the homepage free ebook banner</CardDescription>
+              </div>
+              <Button variant="secondary" size="sm" onClick={exportEbookLeads}>
+                <Download className="mr-2 h-4 w-4" /> Export CSV
+              </Button>
+            </CardHeader>
+            <CardContent className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Email</TableHead>
+                    <TableHead>Phone</TableHead>
+                    <TableHead>Date</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {ebookLeads.length === 0 && (
+                    <TableRow>
+                      <TableCell colSpan={4} className="text-center text-muted-foreground py-6">
+                        No ebook leads yet
+                      </TableCell>
+                    </TableRow>
+                  )}
+                  {ebookLeads.map((lead) => (
+                    <TableRow key={lead.id}>
+                      <TableCell className="font-medium">{lead.profiles?.full_name || 'Unknown'}</TableCell>
+                      <TableCell>
+                        <a href={`mailto:${lead.profiles?.email}`} className="text-primary hover:underline">
+                          {lead.profiles?.email || 'Unknown'}
+                        </a>
+                      </TableCell>
+                      <TableCell>
+                        {lead.profiles?.phone ? (
+                          <a href={`tel:${lead.profiles.phone}`} className="hover:underline">
+                            {lead.profiles.phone}
+                          </a>
+                        ) : (
+                          <span className="text-muted-foreground">Not provided</span>
+                        )}
+                      </TableCell>
+                      <TableCell>{format(new Date(lead.created_at), 'PP')}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

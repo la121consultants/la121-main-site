@@ -57,6 +57,11 @@ const EbookBanner = () => {
 
       if (submissionError) throw submissionError;
 
+      // Fire notification email — non-blocking, failure doesn't block the user
+      supabase.functions.invoke("send-ebook-email", {
+        body: { name: form.name, email: form.email, phone: form.phone },
+      }).catch((err) => console.error("Email notification failed:", err));
+
       setSubmitted(true);
     } catch (err) {
       toast({
