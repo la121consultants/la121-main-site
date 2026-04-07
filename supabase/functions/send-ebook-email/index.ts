@@ -10,7 +10,6 @@ const corsHeaders = {
 interface EbookEmailRequest {
   name: string;
   email: string;
-  phone: string;
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -46,12 +45,6 @@ const handler = async (req: Request): Promise<Response> => {
               <td style="padding:8px 12px;background:#f9fafb;font-weight:600;border:1px solid #e5e7eb;">Email</td>
               <td style="padding:8px 12px;border:1px solid #e5e7eb;">
                 <a href="mailto:${data.email}">${data.email}</a>
-              </td>
-            </tr>
-            <tr>
-              <td style="padding:8px 12px;background:#f9fafb;font-weight:600;border:1px solid #e5e7eb;">Phone</td>
-              <td style="padding:8px 12px;border:1px solid #e5e7eb;">
-                <a href="tel:${data.phone}">${data.phone}</a>
               </td>
             </tr>
           </table>

@@ -56,7 +56,6 @@ interface EbookLead {
   profiles: {
     full_name: string;
     email: string;
-    phone: string | null;
   } | null;
 }
 
@@ -166,7 +165,7 @@ const SuperAdmin = () => {
           .order('created_at', { ascending: false }),
         supabase
           .from('form_submissions')
-          .select('id, status, created_at, profiles:profile_id(full_name, email, phone)')
+          .select('id, status, created_at, profiles:profile_id(full_name, email)')
           .eq('form_type', 'free_ebook_international')
           .order('created_at', { ascending: false }),
         supabase.from('job_postings').select('status, featured'),
@@ -307,7 +306,6 @@ const SuperAdmin = () => {
     const rows = ebookLeads.map((lead) => ({
       Name: lead.profiles?.full_name || 'Unknown',
       Email: lead.profiles?.email || 'Unknown',
-      Phone: lead.profiles?.phone || 'Not provided',
       Status: lead.status,
       Submitted: format(new Date(lead.created_at), 'PPpp'),
     }));
@@ -684,14 +682,13 @@ const SuperAdmin = () => {
                   <TableRow>
                     <TableHead>Name</TableHead>
                     <TableHead>Email</TableHead>
-                    <TableHead>Phone</TableHead>
                     <TableHead>Date</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {ebookLeads.length === 0 && (
                     <TableRow>
-                      <TableCell colSpan={4} className="text-center text-muted-foreground py-6">
+                      <TableCell colSpan={3} className="text-center text-muted-foreground py-6">
                         No ebook leads yet
                       </TableCell>
                     </TableRow>
@@ -703,15 +700,6 @@ const SuperAdmin = () => {
                         <a href={`mailto:${lead.profiles?.email}`} className="text-primary hover:underline">
                           {lead.profiles?.email || 'Unknown'}
                         </a>
-                      </TableCell>
-                      <TableCell>
-                        {lead.profiles?.phone ? (
-                          <a href={`tel:${lead.profiles.phone}`} className="hover:underline">
-                            {lead.profiles.phone}
-                          </a>
-                        ) : (
-                          <span className="text-muted-foreground">Not provided</span>
-                        )}
                       </TableCell>
                       <TableCell>{format(new Date(lead.created_at), 'PP')}</TableCell>
                     </TableRow>

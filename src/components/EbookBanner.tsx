@@ -3,8 +3,9 @@ import { BookOpen, Download, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
+// Direct download URL (forces browser download rather than preview)
 const EBOOK_DOWNLOAD_URL =
-  "https://drive.google.com/file/d/1bdi2Iw6LJ4pi1v-gQZtQ0JwVoGws3V3m/view?usp=drive_link";
+  "https://drive.google.com/uc?export=download&id=1bdi2Iw6LJ4pi1v-gQZtQ0JwVoGws3V3m";
 
 const EbookBanner = () => {
   const { toast } = useToast();
@@ -12,7 +13,7 @@ const EbookBanner = () => {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [dismissed, setDismissed] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", phone: "" });
+  const [form, setForm] = useState({ name: "", email: "" });
 
   if (dismissed) return null;
 
@@ -36,7 +37,6 @@ const EbookBanner = () => {
           .insert({
             full_name: form.name,
             email: form.email,
-            phone: form.phone,
             how_found_us: "Free Ebook Banner",
           })
           .select()
@@ -51,16 +51,18 @@ const EbookBanner = () => {
         .insert({
           profile_id: profileId,
           form_type: "free_ebook_international",
-          additional_notes: `Free ebook download request\nName: ${form.name}\nEmail: ${form.email}\nPhone: ${form.phone}`,
+          additional_notes: `Free ebook download request\nName: ${form.name}\nEmail: ${form.email}`,
           status: "new",
         });
 
       if (submissionError) throw submissionError;
 
-      // Fire notification email — non-blocking, failure doesn't block the user
-      supabase.functions.invoke("send-ebook-email", {
-        body: { name: form.name, email: form.email, phone: form.phone },
-      }).catch((err) => console.error("Email notification failed:", err));
+      // Fire notification email — non-blocking
+      supabase.functions
+        .invoke("send-ebook-email", {
+          body: { name: form.name, email: form.email },
+        })
+        .catch((err) => console.error("Email notification failed:", err));
 
       setSubmitted(true);
     } catch (err) {
@@ -76,7 +78,6 @@ const EbookBanner = () => {
 
   return (
     <div className="relative w-full bg-red-600 text-white">
-      {/* Dismiss button */}
       <button
         onClick={() => setDismissed(true)}
         className="absolute top-3 right-3 text-white/80 hover:text-white transition-colors z-10"
@@ -142,14 +143,6 @@ const EbookBanner = () => {
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
                 className="w-full px-4 py-3 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white text-sm"
               />
-              <input
-                type="tel"
-                placeholder="Phone Number"
-                required
-                value={form.phone}
-                onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white text-sm"
-              />
               <div className="flex gap-3 mt-1">
                 <button
                   type="button"
@@ -181,8 +174,7 @@ const EbookBanner = () => {
             </p>
             <a
               href={EBOOK_DOWNLOAD_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+              download
               className="inline-flex items-center gap-2 bg-white text-red-600 font-bold px-8 py-3 rounded-lg hover:bg-red-50 transition-colors shadow-lg text-sm sm:text-base"
             >
               <Download className="w-5 h-5" />
