@@ -2,7 +2,6 @@ import { useState } from "react";
 import { BookOpen, Download, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
-// Direct download URL (forces browser download rather than preview)
 const EBOOK_DOWNLOAD_URL =
   "https://drive.google.com/uc?export=download&id=1bdi2Iw6LJ4pi1v-gQZtQ0JwVoGws3V3m";
 
@@ -14,51 +13,18 @@ const EbookBanner = () => {
 
   if (dismissed) return null;
 
-  const saveInBackground = (name: string, email: string) => {
-    (async () => {
-      try {
-        const { data: existingProfile } = await supabase
-          .from("profiles")
-          .select("id")
-          .eq("email", email)
-          .maybeSingle();
-
-        let profileId = existingProfile?.id;
-
-        if (!profileId) {
-          const { data: newProfile, error: profileError } = await supabase
-            .from("profiles")
-            .insert({ full_name: name, email, how_found_us: "Free Ebook Banner" })
-            .select()
-            .single();
-          if (profileError) throw profileError;
-          profileId = newProfile.id;
-        }
-
-        await supabase.from("form_submissions").insert({
-          profile_id: profileId,
-          form_type: "free_ebook_international",
-          additional_notes: `Free ebook download request\nName: ${name}\nEmail: ${email}`,
-          status: "new",
-        });
-
-        supabase.functions
-          .invoke("send-ebook-email", { body: { name, email } })
-          .catch((err) => console.error("Email notification failed:", err));
-      } catch (err) {
-        console.error("Ebook lead save failed:", err);
-      }
-    })();
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.email) return;
 
-    // Open the download immediately in a new tab, then show the success state
+    // Open download immediately — no waiting on any server call
     window.open(EBOOK_DOWNLOAD_URL, "_blank", "noopener,noreferrer");
     setSubmitted(true);
-    saveInBackground(form.name, form.email);
+
+    // Save lead + send admin email via edge function (service role bypasses RLS)
+    supabase.functions
+      .invoke("send-ebook-email", { body: { name: form.name, email: form.email } })
+      .catch((err) => console.error("Lead save failed:", err));
   };
 
   return (
@@ -154,7 +120,7 @@ const EbookBanner = () => {
               Your free ebook is ready!
             </h2>
             <p className="text-red-100 mb-5 text-sm sm:text-base">
-              Thank you, {form.name}! Click below to download your free career guide.
+              Thank you, {form.name}! Your download should have started automatically.
             </p>
             <a
               href={EBOOK_DOWNLOAD_URL}
@@ -166,7 +132,7 @@ const EbookBanner = () => {
               Click Here to Download
             </a>
             <p className="mt-3 text-red-200 text-xs">
-              If the download didn't start automatically, click the button above.
+              If the download did not start automatically, click the button above.
             </p>
           </div>
         )}

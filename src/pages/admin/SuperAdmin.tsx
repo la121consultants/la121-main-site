@@ -662,7 +662,7 @@ const SuperAdmin = () => {
             <BookOpen className="h-5 w-5 text-red-600" />
             <div>
               <h2 className="text-xl font-semibold">Free Ebook Leads — International Students</h2>
-              <p className="text-muted-foreground text-sm">Name, email and phone of every international student who downloaded the free ebook.</p>
+              <p className="text-muted-foreground text-sm">Name and email of every international student who downloaded the free ebook.</p>
             </div>
           </div>
 
