@@ -28,7 +28,7 @@ const EbookBanner = () => {
   };
 
   return (
-    <div className="relative w-full bg-red-600 text-white">
+    <div className="relative w-full bg-indigo-900 text-white">
       <button
         onClick={() => setDismissed(true)}
         className="absolute top-3 right-3 text-white/80 hover:text-white transition-colors z-10"
@@ -44,13 +44,13 @@ const EbookBanner = () => {
               <BookOpen className="w-10 h-10 text-white" />
             </div>
             <div className="flex-1">
-              <p className="text-xs font-semibold uppercase tracking-widest text-red-200 mb-1">
+              <p className="text-xs font-semibold uppercase tracking-widest text-indigo-200 mb-1">
                 Free Resource for International Students
               </p>
               <h2 className="text-2xl sm:text-3xl font-bold leading-tight mb-2">
                 Download Your Free Career Guide — Exclusively for International Students
               </h2>
-              <p className="text-red-100 text-sm sm:text-base max-w-2xl">
+              <p className="text-indigo-100 text-sm sm:text-base max-w-2xl">
                 Everything you need to land your first UK job: CV tips, interview strategies,
                 visa-friendly employer lists, and more. Completely free.
               </p>
@@ -58,7 +58,7 @@ const EbookBanner = () => {
             <div className="flex-shrink-0">
               <button
                 onClick={() => setShowForm(true)}
-                className="inline-flex items-center gap-2 bg-white text-red-600 font-bold px-6 py-3 rounded-lg hover:bg-red-50 transition-colors shadow-lg text-sm sm:text-base whitespace-nowrap"
+                className="inline-flex items-center gap-2 bg-white text-indigo-700 font-bold px-6 py-3 rounded-lg hover:bg-indigo-50 transition-colors shadow-lg text-sm sm:text-base whitespace-nowrap"
               >
                 <Download className="w-4 h-4" />
                 Get My Free Ebook
@@ -70,7 +70,7 @@ const EbookBanner = () => {
         {showForm && !submitted && (
           <div className="max-w-2xl mx-auto">
             <div className="text-center mb-6">
-              <p className="text-xs font-semibold uppercase tracking-widest text-red-200 mb-1">
+              <p className="text-xs font-semibold uppercase tracking-widest text-indigo-200 mb-1">
                 Free Resource for International Students
               </p>
               <h2 className="text-xl sm:text-2xl font-bold">
@@ -104,7 +104,7 @@ const EbookBanner = () => {
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 bg-white text-red-600 font-bold px-4 py-3 rounded-lg hover:bg-red-50 transition-colors text-sm"
+                  className="flex-1 bg-white text-indigo-700 font-bold px-4 py-3 rounded-lg hover:bg-indigo-50 transition-colors text-sm"
                 >
                   Submit & Download
                 </button>
@@ -119,19 +119,19 @@ const EbookBanner = () => {
             <h2 className="text-xl sm:text-2xl font-bold mb-2">
               Your free ebook is ready!
             </h2>
-            <p className="text-red-100 mb-5 text-sm sm:text-base">
+            <p className="text-indigo-100 mb-5 text-sm sm:text-base">
               Thank you, {form.name}! Your download should have started automatically.
             </p>
             <a
               href={EBOOK_DOWNLOAD_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-white text-red-600 font-bold px-8 py-3 rounded-lg hover:bg-red-50 transition-colors shadow-lg text-sm sm:text-base"
+              className="inline-flex items-center gap-2 bg-white text-indigo-700 font-bold px-8 py-3 rounded-lg hover:bg-indigo-50 transition-colors shadow-lg text-sm sm:text-base"
             >
               <Download className="w-5 h-5" />
               Click Here to Download
             </a>
-            <p className="mt-3 text-red-200 text-xs">
+            <p className="mt-3 text-indigo-200 text-xs">
               If the download did not start automatically, click the button above.
             </p>
           </div>
