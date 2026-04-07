@@ -1,79 +1,63 @@
 import { useState } from "react";
 import { BookOpen, Download, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
 
 // Direct download URL (forces browser download rather than preview)
 const EBOOK_DOWNLOAD_URL =
   "https://drive.google.com/uc?export=download&id=1bdi2Iw6LJ4pi1v-gQZtQ0JwVoGws3V3m";
 
 const EbookBanner = () => {
-  const { toast } = useToast();
   const [showForm, setShowForm] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [dismissed, setDismissed] = useState(false);
   const [form, setForm] = useState({ name: "", email: "" });
 
   if (dismissed) return null;
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      // Find or create a profile for this person
-      const { data: existingProfile } = await supabase
-        .from("profiles")
-        .select("id")
-        .eq("email", form.email)
-        .maybeSingle();
-
-      let profileId = existingProfile?.id;
-
-      if (!profileId) {
-        const { data: newProfile, error: profileError } = await supabase
+  const saveInBackground = (name: string, email: string) => {
+    (async () => {
+      try {
+        const { data: existingProfile } = await supabase
           .from("profiles")
-          .insert({
-            full_name: form.name,
-            email: form.email,
-            how_found_us: "Free Ebook Banner",
-          })
-          .select()
-          .single();
+          .select("id")
+          .eq("email", email)
+          .maybeSingle();
 
-        if (profileError) throw profileError;
-        profileId = newProfile.id;
-      }
+        let profileId = existingProfile?.id;
 
-      const { error: submissionError } = await supabase
-        .from("form_submissions")
-        .insert({
+        if (!profileId) {
+          const { data: newProfile, error: profileError } = await supabase
+            .from("profiles")
+            .insert({ full_name: name, email, how_found_us: "Free Ebook Banner" })
+            .select()
+            .single();
+          if (profileError) throw profileError;
+          profileId = newProfile.id;
+        }
+
+        await supabase.from("form_submissions").insert({
           profile_id: profileId,
           form_type: "free_ebook_international",
-          additional_notes: `Free ebook download request\nName: ${form.name}\nEmail: ${form.email}`,
+          additional_notes: `Free ebook download request\nName: ${name}\nEmail: ${email}`,
           status: "new",
         });
 
-      if (submissionError) throw submissionError;
+        supabase.functions
+          .invoke("send-ebook-email", { body: { name, email } })
+          .catch((err) => console.error("Email notification failed:", err));
+      } catch (err) {
+        console.error("Ebook lead save failed:", err);
+      }
+    })();
+  };
 
-      // Fire notification email — non-blocking
-      supabase.functions
-        .invoke("send-ebook-email", {
-          body: { name: form.name, email: form.email },
-        })
-        .catch((err) => console.error("Email notification failed:", err));
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.email) return;
 
-      setSubmitted(true);
-    } catch (err) {
-      toast({
-        title: "Something went wrong",
-        description: "Please try again or contact us directly.",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
+    // Show download immediately — save to DB in the background
+    setSubmitted(true);
+    saveInBackground(form.name, form.email);
   };
 
   return (
@@ -153,10 +137,9 @@ const EbookBanner = () => {
                 </button>
                 <button
                   type="submit"
-                  disabled={loading}
-                  className="flex-1 bg-white text-red-600 font-bold px-4 py-3 rounded-lg hover:bg-red-50 transition-colors text-sm disabled:opacity-70"
+                  className="flex-1 bg-white text-red-600 font-bold px-4 py-3 rounded-lg hover:bg-red-50 transition-colors text-sm"
                 >
-                  {loading ? "Submitting..." : "Submit & Download"}
+                  Submit & Download
                 </button>
               </div>
             </form>
