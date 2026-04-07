@@ -49,6 +49,13 @@ interface Submission {
   };
 }
 
+const parseNotes = (notes: string | null) => {
+  if (!notes) return { name: '', email: '' };
+  const name = notes.match(/Name:\s*(.+)/)?.[1]?.trim() || '';
+  const email = notes.match(/Email:\s*(.+)/)?.[1]?.trim() || '';
+  return { name, email };
+};
+
 const FormSubmissions = () => {
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [filteredSubmissions, setFilteredSubmissions] = useState<Submission[]>([]);
@@ -186,6 +193,7 @@ const FormSubmissions = () => {
                     <SelectItem value="client_call">Client Call</SelectItem>
                     <SelectItem value="service_order">Service Order</SelectItem>
                     <SelectItem value="partnership">Partnership</SelectItem>
+                    <SelectItem value="free_ebook_international">Free Ebook Download</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -251,14 +259,20 @@ const FormSubmissions = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredSubmissions.map((submission) => (
+                  {filteredSubmissions.map((submission) => {
+                    const parsed = parseNotes(submission.additional_notes);
+                    const name = submission.profile?.full_name || parsed.name || 'N/A';
+                    const email = submission.profile?.email || parsed.email || 'N/A';
+                    return (
                     <TableRow key={submission.id}>
-                      <TableCell className="font-medium">
-                        {submission.profile?.full_name || 'N/A'}
+                      <TableCell className="font-medium">{name}</TableCell>
+                      <TableCell>
+                        {email !== 'N/A' ? (
+                          <a href={`mailto:${email}`} className="text-primary hover:underline">{email}</a>
+                        ) : 'N/A'}
                       </TableCell>
-                      <TableCell>{submission.profile?.email || 'N/A'}</TableCell>
                       <TableCell className="capitalize">
-                        {submission.form_type.replace('_', ' ')}
+                        {submission.form_type.replace(/_/g, ' ')}
                       </TableCell>
                       <TableCell>{submission.service_selected || 'N/A'}</TableCell>
                       <TableCell>
@@ -277,7 +291,8 @@ const FormSubmissions = () => {
                         </Button>
                       </TableCell>
                     </TableRow>
-                  ))}
+                    );
+                  })}
                 </TableBody>
               </Table>
             )}
@@ -291,16 +306,24 @@ const FormSubmissions = () => {
           <DialogHeader>
             <DialogTitle>Submission Details</DialogTitle>
           </DialogHeader>
-          {selectedSubmission && (
+          {selectedSubmission && (() => {
+            const parsed = parseNotes(selectedSubmission.additional_notes);
+            const name = selectedSubmission.profile?.full_name || parsed.name || 'N/A';
+            const email = selectedSubmission.profile?.email || parsed.email || 'N/A';
+            return (
             <div className="space-y-6">
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">Name</p>
-                  <p className="text-base">{selectedSubmission.profile?.full_name || 'N/A'}</p>
+                  <p className="text-base">{name}</p>
                 </div>
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">Email</p>
-                  <p className="text-base">{selectedSubmission.profile?.email || 'N/A'}</p>
+                  {email !== 'N/A' ? (
+                    <a href={`mailto:${email}`} className="text-base text-primary hover:underline">{email}</a>
+                  ) : (
+                    <p className="text-base">N/A</p>
+                  )}
                 </div>
                 <div>
                   <p className="text-sm font-medium text-muted-foreground">Phone</p>
@@ -374,7 +397,8 @@ const FormSubmissions = () => {
                 </Select>
               </div>
             </div>
-          )}
+            );
+          })()}
         </DialogContent>
       </Dialog>
     </AdminLayout>
