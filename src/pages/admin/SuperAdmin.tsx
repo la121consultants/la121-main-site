@@ -53,11 +53,22 @@ interface EbookLead {
   id: string;
   created_at: string;
   status: string;
+  additional_notes: string | null;
   profiles: {
     full_name: string;
     email: string;
   } | null;
 }
+
+const parseEbookNotes = (notes: string | null): { name: string; email: string } => {
+  if (!notes) return { name: '', email: '' };
+  const nameMatch = notes.match(/Name:\s*(.+)/);
+  const emailMatch = notes.match(/Email:\s*(.+)/);
+  return {
+    name: nameMatch?.[1]?.trim() || '',
+    email: emailMatch?.[1]?.trim() || '',
+  };
+};
 
 interface PartnershipSubmission {
   id: string;
@@ -110,6 +121,8 @@ const SuperAdmin = () => {
   const [partnerships, setPartnerships] = useState<PartnershipSubmission[]>([]);
   const [partnershipStatus, setPartnershipStatus] = useState('all');
   const [ebookLeads, setEbookLeads] = useState<EbookLead[]>([]);
+  const [ebookLoading, setEbookLoading] = useState(true);
+  const [ebookError, setEbookError] = useState<string | null>(null);
   const [jobSnapshot, setJobSnapshot] = useState({ total: 0, approved: 0, pending: 0, featured: 0 });
 
   useEffect(() => {
@@ -135,7 +148,6 @@ const SuperAdmin = () => {
         cvTool,
         bioTool,
         partnershipRes,
-        ebookRes,
         jobRes,
       ] = await Promise.all([
         supabase.from('profiles').select('id', { count: 'exact', head: true }),
@@ -163,11 +175,6 @@ const SuperAdmin = () => {
           )
           .eq('form_type', 'partnership')
           .order('created_at', { ascending: false }),
-        supabase
-          .from('form_submissions')
-          .select('id, status, created_at, profiles:profile_id(full_name, email)')
-          .eq('form_type', 'free_ebook_international')
-          .order('created_at', { ascending: false }),
         supabase.from('job_postings').select('status, featured'),
       ]);
 
@@ -182,7 +189,6 @@ const SuperAdmin = () => {
       setPopularPages(buildPopularPages(submissions.data || []));
       setConsultations([]);
       setPartnerships((partnershipRes.data as PartnershipSubmission[]) || []);
-      setEbookLeads((ebookRes.data as EbookLead[]) || []);
 
       const jobData = jobRes.data || [];
       setJobSnapshot({
@@ -204,6 +210,32 @@ const SuperAdmin = () => {
       loadData();
     }
   }, [isSuperAdmin, loadData]);
+
+  const loadEbookLeads = useCallback(async () => {
+    setEbookLoading(true);
+    setEbookError(null);
+    try {
+      const { data, error } = await supabase
+        .from('form_submissions')
+        .select('id, status, created_at, additional_notes, profiles:profile_id(full_name, email)')
+        .eq('form_type', 'free_ebook_international')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setEbookLeads((data as EbookLead[]) || []);
+    } catch (err: any) {
+      console.error('Ebook leads fetch error:', err);
+      setEbookError('Unable to load ebook leads. Please refresh the page.');
+    } finally {
+      setEbookLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isSuperAdmin) {
+      loadEbookLeads();
+    }
+  }, [isSuperAdmin, loadEbookLeads]);
 
   const buildTrendData = (profiles: { created_at: string; last_login: string | null }[]) => {
     const days = Array.from({ length: 7 }).map((_, idx) => subDays(new Date(), 6 - idx));
@@ -303,12 +335,15 @@ const SuperAdmin = () => {
   };
 
   const exportEbookLeads = () => {
-    const rows = ebookLeads.map((lead) => ({
-      Name: lead.profiles?.full_name || 'Unknown',
-      Email: lead.profiles?.email || 'Unknown',
-      Status: lead.status,
-      Submitted: format(new Date(lead.created_at), 'PPpp'),
-    }));
+    const rows = ebookLeads.map((lead) => {
+      const parsed = parseEbookNotes(lead.additional_notes);
+      return {
+        Name: lead.profiles?.full_name || parsed.name || 'Unknown',
+        Email: lead.profiles?.email || parsed.email || 'Unknown',
+        Status: lead.status,
+        Submitted: format(new Date(lead.created_at), 'PPpp'),
+      };
+    });
 
     if (rows.length === 0) {
       toast.message('No ebook leads to export');
@@ -672,40 +707,61 @@ const SuperAdmin = () => {
                 <CardTitle>Leads ({ebookLeads.length})</CardTitle>
                 <CardDescription>All submissions from the homepage free ebook banner</CardDescription>
               </div>
-              <Button variant="secondary" size="sm" onClick={exportEbookLeads}>
-                <Download className="mr-2 h-4 w-4" /> Export CSV
-              </Button>
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm" onClick={loadEbookLeads}>
+                  Refresh
+                </Button>
+                <Button variant="secondary" size="sm" onClick={exportEbookLeads}>
+                  <Download className="mr-2 h-4 w-4" /> Export CSV
+                </Button>
+              </div>
             </CardHeader>
             <CardContent className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Email</TableHead>
-                    <TableHead>Date</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {ebookLeads.length === 0 && (
+              {ebookLoading ? (
+                <p className="text-center text-muted-foreground py-6">Loading leads...</p>
+              ) : ebookError ? (
+                <p className="text-center text-destructive py-6">{ebookError}</p>
+              ) : (
+                <Table>
+                  <TableHeader>
                     <TableRow>
-                      <TableCell colSpan={3} className="text-center text-muted-foreground py-6">
-                        No ebook leads yet
-                      </TableCell>
+                      <TableHead>Name</TableHead>
+                      <TableHead>Email</TableHead>
+                      <TableHead>Date</TableHead>
                     </TableRow>
-                  )}
-                  {ebookLeads.map((lead) => (
-                    <TableRow key={lead.id}>
-                      <TableCell className="font-medium">{lead.profiles?.full_name || 'Unknown'}</TableCell>
-                      <TableCell>
-                        <a href={`mailto:${lead.profiles?.email}`} className="text-primary hover:underline">
-                          {lead.profiles?.email || 'Unknown'}
-                        </a>
-                      </TableCell>
-                      <TableCell>{format(new Date(lead.created_at), 'PP')}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {ebookLeads.length === 0 ? (
+                      <TableRow>
+                        <TableCell colSpan={3} className="text-center text-muted-foreground py-6">
+                          No ebook leads yet
+                        </TableCell>
+                      </TableRow>
+                    ) : (
+                      ebookLeads.map((lead) => {
+                        const parsed = parseEbookNotes(lead.additional_notes);
+                        const name = lead.profiles?.full_name || parsed.name || 'Unknown';
+                        const email = lead.profiles?.email || parsed.email || '';
+                        return (
+                          <TableRow key={lead.id}>
+                            <TableCell className="font-medium">{name}</TableCell>
+                            <TableCell>
+                              {email ? (
+                                <a href={`mailto:${email}`} className="text-primary hover:underline">
+                                  {email}
+                                </a>
+                              ) : (
+                                <span className="text-muted-foreground">Unknown</span>
+                              )}
+                            </TableCell>
+                            <TableCell>{format(new Date(lead.created_at), 'PP')}</TableCell>
+                          </TableRow>
+                        );
+                      })
+                    )}
+                  </TableBody>
+                </Table>
+              )}
             </CardContent>
           </Card>
         </section>
