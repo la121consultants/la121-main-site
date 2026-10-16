@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import WorkExperienceProgrammeBanner from "@/components/WorkExperienceProgrammeBanner";
 import { Briefcase, Users, TrendingUp, Award } from "lucide-react";
 import { z } from "zod";
 import workExpCorine from "@/assets/work-exp-corine.jpg";
@@ -130,7 +131,8 @@ const WorkExperience = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      
+      <WorkExperienceProgrammeBanner />
+
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-4 bg-gradient-to-br from-primary/5 via-background to-secondary/5">
         <div className="container mx-auto max-w-5xl text-center">
