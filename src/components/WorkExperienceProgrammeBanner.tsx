@@ -4,6 +4,7 @@ import { X, CheckCircle2 } from "lucide-react";
 const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/bJeaEXfFzeV43QTf6Kdwc0N";
 
 const benefits = [
+  "Open to students only.",
   "Gain real-world digital marketing work experience from home.",
   "Receive training and ongoing support.",
   "Get a reference on completion to support your job search.",
@@ -28,10 +29,10 @@ const WorkExperienceProgrammeBanner = () => {
 
       <div className="max-w-5xl mx-auto px-4 py-8 sm:py-10 text-center">
         <p className="text-xs sm:text-sm font-extrabold uppercase tracking-widest mb-2">
-          Only £29.99/month
+          Exclusively for Students · Only £29.99/month
         </p>
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold leading-tight mb-4">
-          Join Our Digital Marketing Work Experience Programme
+          Join Our Digital Marketing Work Experience Programme for Students
         </h2>
 
         <ul className="text-left sm:text-center max-w-3xl mx-auto mb-6 space-y-2">
