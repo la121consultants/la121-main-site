@@ -16,7 +16,7 @@ const Hero = () => {
         icons: ["⭐"]
       }}
       headline={{
-        line1: "Land the roles you deserve",
+        line1: "Get the job that you deserve",
         line2: "with strategic career consulting"
       }}
       subtitle="Interview-ready CVs, confident storytelling, and proven job-search strategies that lead to more interviews, offers, and clarity for graduates, job changers, and ambitious UK professionals."
