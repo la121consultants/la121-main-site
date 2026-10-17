@@ -456,10 +456,10 @@ void main(){gl_Position=position;}`;
         <div className="text-center space-y-6 max-w-5xl mx-auto">
           {/* Main Heading with Animation */}
           <div className="space-y-2">
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-fade-in-up animation-delay-200">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-fade-in-up animation-delay-200">
               {headline.line1}
             </h1>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-r from-accent via-primary to-accent bg-clip-text text-transparent animate-fade-in-up animation-delay-400">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-accent via-primary to-accent bg-clip-text text-transparent animate-fade-in-up animation-delay-400">
               {headline.line2}
             </h1>
           </div>
