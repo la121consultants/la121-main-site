@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import LA121LabBanner from "@/components/LA121LabBanner";
 import WorkExperienceProgrammeBanner from "@/components/WorkExperienceProgrammeBanner";
 import { Briefcase, Users, TrendingUp, Award } from "lucide-react";
 import { z } from "zod";
@@ -131,7 +132,7 @@ const WorkExperience = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <WorkExperienceProgrammeBanner />
+      <LA121LabBanner />
 
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-4 bg-gradient-to-br from-primary/5 via-background to-secondary/5">
@@ -177,6 +178,8 @@ const WorkExperience = () => {
           </div>
         </div>
       </section>
+
+      <WorkExperienceProgrammeBanner />
 
       {/* Success Stories / Reviews */}
       <section className="py-20 px-4 bg-muted/30">
