@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import LA121LabBanner from "@/components/LA121LabBanner";
 import WorkExperienceProgrammeBanner from "@/components/WorkExperienceProgrammeBanner";
+import EbookBanner from "@/components/EbookBanner";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Services from "@/components/Services";
@@ -25,6 +26,7 @@ const Index = () => {
       <JobSeekersBenefits />
       <DigitalMarketingProgram />
       <CareerSuite />
+      <EbookBanner />
       <Ebooks />
       <WorkExperienceProgrammeBanner />
       <Testimonials />
