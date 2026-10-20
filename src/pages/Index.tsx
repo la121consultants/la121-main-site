@@ -1,7 +1,6 @@
 import Navbar from "@/components/Navbar";
 import LA121LabBanner from "@/components/LA121LabBanner";
 import WorkExperienceProgrammeBanner from "@/components/WorkExperienceProgrammeBanner";
-import EbookBanner from "@/components/EbookBanner";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Services from "@/components/Services";
@@ -20,7 +19,6 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
       <LA121LabBanner />
-      <EbookBanner />
       <Hero />
       <About />
       <Services />
