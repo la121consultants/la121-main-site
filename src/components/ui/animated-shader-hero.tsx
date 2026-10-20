@@ -358,7 +358,7 @@ void main(){gl_Position=position;}`;
     ) ?? [];
 
   return (
-    <div className={`relative w-full h-screen overflow-hidden bg-black ${className}`}>
+    <div className={`relative w-full min-h-[640px] md:min-h-[80vh] overflow-hidden bg-black ${className}`}>
       <style>{`
         @keyframes fade-in-down {
           from {
@@ -432,7 +432,10 @@ void main(){gl_Position=position;}`;
         className="absolute inset-0 w-full h-full object-contain touch-none"
         style={{ background: 'black' }}
       />
-      
+
+      {/* Dark scrim for text legibility against the bright shader background */}
+      <div className="absolute inset-0 bg-black/60 pointer-events-none" />
+
       {/* Hero Content Overlay */}
       <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-white px-4 pb-48 md:pb-56">
         {/* Trust Badge */}
@@ -456,17 +459,17 @@ void main(){gl_Position=position;}`;
         <div className="text-center space-y-6 max-w-5xl mx-auto">
           {/* Main Heading with Animation */}
           <div className="space-y-2">
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-fade-in-up animation-delay-200">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent drop-shadow-[0_4px_16px_rgba(0,0,0,0.8)] animate-fade-in-up animation-delay-200">
               {headline.line1}
             </h1>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-r from-accent via-primary to-accent bg-clip-text text-transparent animate-fade-in-up animation-delay-400">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-r from-accent via-primary to-accent bg-clip-text text-transparent drop-shadow-[0_4px_16px_rgba(0,0,0,0.8)] animate-fade-in-up animation-delay-400">
               {headline.line2}
             </h1>
           </div>
           
           {/* Subtitle with Animation */}
           <div className="max-w-3xl mx-auto animate-fade-in-up animation-delay-600">
-            <p className="text-lg md:text-xl lg:text-2xl text-foreground/90 font-light leading-relaxed">
+            <p className="text-lg md:text-xl lg:text-2xl text-white/90 font-light leading-relaxed">
               {subtitle}
             </p>
           </div>
