@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="container px-4 mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           <div className="space-y-4">
-            <img src={logo} alt="LA121 Consultants" className="h-16 w-auto" />
+            <img src={logo} alt="LA121 Consultants" className="h-16 w-auto" loading="lazy" />
             <p className="text-white/80 text-sm">
               Empowering UK professionals with CV revamp service UK expertise, professional CV writing,
               interview preparation, and ongoing job search support.

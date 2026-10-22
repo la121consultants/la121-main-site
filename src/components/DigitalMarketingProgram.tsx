@@ -1,10 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { GraduationCap, Clock, Laptop, Award, Play } from "lucide-react";
 import { useRef, useState } from "react";
+import { useLowBandwidth } from "@/contexts/LowBandwidthContext";
 
 const DigitalMarketingProgram = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const { lowBandwidth } = useLowBandwidth();
 
   const handlePlayVideo = () => {
     if (videoRef.current) {
@@ -171,6 +173,7 @@ const DigitalMarketingProgram = () => {
                 ref={videoRef}
                 src="/videos/blessing-review.mp4"
                 className="w-full h-full object-cover"
+                preload={lowBandwidth ? "none" : "metadata"}
                 playsInline
                 controls={isPlaying}
                 onEnded={() => setIsPlaying(false)}

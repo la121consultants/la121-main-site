@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
-import { Menu, X, ChevronDown, User } from "lucide-react";
+import { Menu, X, ChevronDown, User, Sun, Moon, Zap, ZapOff } from "lucide-react";
+import { useLowBandwidth } from "@/contexts/LowBandwidthContext";
 import logo from "@/assets/la121-logo.png";
 
 interface DropdownItem {
@@ -122,6 +124,9 @@ const MobileDropdown = ({ label, items, onItemClick }: { label: string; items: D
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
+  const { theme, setTheme } = useTheme();
+  const { lowBandwidth, setLowBandwidth } = useLowBandwidth();
+  const isDark = theme === "dark";
 
   const scrollToSection = (id: string) => {
     setIsOpen(false);
@@ -190,11 +195,30 @@ const Navbar = () => {
             </button>
             
             <NavDropdown label="About" items={aboutItems} onClose={closeMenu} />
-            
+
+            <button
+              onClick={() => setLowBandwidth(!lowBandwidth)}
+              className={`text-muted-foreground hover:text-primary transition-colors ${lowBandwidth ? "text-primary" : ""}`}
+              aria-label={lowBandwidth ? "Turn off basic mode" : "Turn on basic mode for low internet connections"}
+              aria-pressed={lowBandwidth}
+              title={lowBandwidth ? "Basic mode on" : "Turn on basic mode"}
+            >
+              {lowBandwidth ? <ZapOff className="h-5 w-5" /> : <Zap className="h-5 w-5" />}
+            </button>
+
+            <button
+              onClick={() => setTheme(isDark ? "light" : "dark")}
+              className="text-muted-foreground hover:text-primary transition-colors"
+              aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+              title={isDark ? "Switch to light mode" : "Switch to dark mode"}
+            >
+              {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            </button>
+
             <Link to="/auth" className="text-muted-foreground hover:text-primary transition-colors">
               <User className="h-5 w-5" />
             </Link>
-            
+
             <Link to="/book-call">
               <Button className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-6">
                 Book a Call
@@ -250,7 +274,27 @@ const Navbar = () => {
             >
               Sign In
             </Link>
-            
+
+            <div className="flex gap-2 py-3 border-b border-border/50">
+              <button
+                onClick={() => setLowBandwidth(!lowBandwidth)}
+                aria-pressed={lowBandwidth}
+                className={`flex-1 flex items-center justify-center gap-2 rounded-lg border px-3 py-2 text-sm font-medium transition-colors ${
+                  lowBandwidth ? "border-primary text-primary bg-primary/5" : "border-border text-muted-foreground"
+                }`}
+              >
+                {lowBandwidth ? <ZapOff className="h-4 w-4" /> : <Zap className="h-4 w-4" />}
+                Basic mode
+              </button>
+              <button
+                onClick={() => setTheme(isDark ? "light" : "dark")}
+                className="flex-1 flex items-center justify-center gap-2 rounded-lg border border-border px-3 py-2 text-sm font-medium text-muted-foreground transition-colors"
+              >
+                {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+                {isDark ? "Light mode" : "Dark mode"}
+              </button>
+            </div>
+
             <div className="pt-4">
               <Link to="/book-call" className="block" onClick={closeMenu}>
                 <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold">
