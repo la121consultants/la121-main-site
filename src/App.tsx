@@ -1,6 +1,8 @@
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { LowBandwidthProvider } from "@/contexts/LowBandwidthContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
@@ -40,45 +42,49 @@ const PageTracker = () => {
 };
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <PageTracker />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/work-experience" element={<WorkExperience />} />
-          <Route path="/ebooks" element={<EbooksPage />} />
-          <Route path="/payment-success" element={<PaymentSuccess />} />
-          <Route path="/book-call" element={<BookCall />} />
-          <Route path="/order-service" element={<OrderService />} />
-          <Route path="/partnership" element={<Partnership />} />
-          <Route path="/jobs" element={<Jobs />} />
-          <Route path="/website-building-services" element={<WebsiteBuildingServices />} />
-          <Route path="/auth" element={<Auth />} />
-          <Route path="/dashboard" element={<UserDashboard />} />
-          <Route path="/admin" element={<AdminLogin />} />
-          <Route path="/admin/dashboard" element={<Dashboard />} />
-          <Route path="/admin/super" element={<SuperAdmin />} />
-          <Route path="/admin/users" element={<Users />} />
-          <Route path="/admin/submissions" element={<FormSubmissions />} />
-          <Route path="/admin/reports" element={<Reports />} />
-          <Route path="/admin/jobs" element={<JobPostings />} />
-          <Route path="/admin/users-management" element={<AdminUsers />} />
-          <Route path="/admin/reviews" element={<Reviews />} />
-          <Route path="/admin/services" element={<Services />} />
-          <Route path="/admin/blog" element={<Blog />} />
-          <Route path="/admin/ebooks" element={<EbooksAdmin />} />
-          <Route path="/admin/settings" element={<Settings />} />
-          <Route path="/admin/audit" element={<AuditLog />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+  <ThemeProvider>
+    <LowBandwidthProvider>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <PageTracker />
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/work-experience" element={<WorkExperience />} />
+              <Route path="/ebooks" element={<EbooksPage />} />
+              <Route path="/payment-success" element={<PaymentSuccess />} />
+              <Route path="/book-call" element={<BookCall />} />
+              <Route path="/order-service" element={<OrderService />} />
+              <Route path="/partnership" element={<Partnership />} />
+              <Route path="/jobs" element={<Jobs />} />
+              <Route path="/website-building-services" element={<WebsiteBuildingServices />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/dashboard" element={<UserDashboard />} />
+              <Route path="/admin" element={<AdminLogin />} />
+              <Route path="/admin/dashboard" element={<Dashboard />} />
+              <Route path="/admin/super" element={<SuperAdmin />} />
+              <Route path="/admin/users" element={<Users />} />
+              <Route path="/admin/submissions" element={<FormSubmissions />} />
+              <Route path="/admin/reports" element={<Reports />} />
+              <Route path="/admin/jobs" element={<JobPostings />} />
+              <Route path="/admin/users-management" element={<AdminUsers />} />
+              <Route path="/admin/reviews" element={<Reviews />} />
+              <Route path="/admin/services" element={<Services />} />
+              <Route path="/admin/blog" element={<Blog />} />
+              <Route path="/admin/ebooks" element={<EbooksAdmin />} />
+              <Route path="/admin/settings" element={<Settings />} />
+              <Route path="/admin/audit" element={<AuditLog />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </LowBandwidthProvider>
+  </ThemeProvider>
 );
 
 export default App;

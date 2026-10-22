@@ -190,19 +190,21 @@ const WorkExperience = () => {
           <div className="grid md:grid-cols-2 gap-8">
             {/* Corine's Review */}
             <div className="rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <img 
-                src={workExpCorine} 
+              <img
+                src={workExpCorine}
                 alt="Corine Chiyembekeza - Former Marketing Manager testimonial for LA121 Digital Marketing Work Experience Program"
                 className="w-full h-auto"
+                loading="lazy"
               />
             </div>
             
             {/* Teresa's Review */}
             <div className="rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <img 
-                src={workExpTeresa} 
+              <img
+                src={workExpTeresa}
                 alt="Teresa Waigwa - Marketing Manager testimonial for LA121 Digital Marketing Work Experience Program"
                 className="w-full h-auto"
+                loading="lazy"
               />
             </div>
           </div>

@@ -31,10 +31,15 @@ interface HeroProps {
     }[];
   };
   className?: string;
+  /** Skips the WebGL shader entirely and uses a static gradient instead, for low-bandwidth/low-power mode. */
+  lowBandwidth?: boolean;
 }
 
+const STATIC_HERO_BACKGROUND =
+  'radial-gradient(circle at 20% 20%, rgba(58,131,254,0.35), transparent 55%), radial-gradient(circle at 80% 0%, rgba(255,143,244,0.25), transparent 60%), #020204';
+
 // Reusable Shader Background Hook
-const useShaderBackground = () => {
+const useShaderBackground = (enabled: boolean) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationFrameRef = useRef<number>();
   const rendererRef = useRef<WebGLRenderer | null>(null);
@@ -300,13 +305,20 @@ void main(){gl_Position=position;}`;
     if (!canvasRef.current) return;
 
     const canvas = canvasRef.current;
+
+    // Basic/low-bandwidth mode: skip the WebGL shader (and its per-frame GPU work) entirely.
+    if (!enabled) {
+      canvas.style.background = STATIC_HERO_BACKGROUND;
+      return;
+    }
+
     const dpr = Math.max(1, 0.5 * window.devicePixelRatio);
 
     try {
       rendererRef.current = new WebGLRenderer(canvas, dpr);
     } catch (error) {
       console.warn('WebGL2 not available, falling back to static hero background.', error);
-      canvas.style.background = 'radial-gradient(circle at 20% 20%, rgba(58,131,254,0.35), transparent 55%), radial-gradient(circle at 80% 0%, rgba(255,143,244,0.25), transparent 60%), #020204';
+      canvas.style.background = STATIC_HERO_BACKGROUND;
       return;
     }
 
@@ -336,7 +348,7 @@ void main(){gl_Position=position;}`;
       }
       pointersRef.current = null;
     };
-  }, []);
+  }, [enabled]);
 
   return canvasRef;
 };
@@ -348,9 +360,10 @@ void main(){gl_Position=position;}`;
     subtitle,
     buttons,
     logoCloud,
-    className = ""
+    className = "",
+    lowBandwidth = false
   }) => {
-  const canvasRef = useShaderBackground();
+  const canvasRef = useShaderBackground(!lowBandwidth);
 
   const filteredLogos =
     logoCloud?.logos?.filter(

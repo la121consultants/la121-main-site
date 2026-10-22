@@ -69,10 +69,11 @@ const Testimonials = () => {
               <CardContent className="pt-6 space-y-4">
                 {testimonial.image && (
                   <div className="w-full h-56 mb-4 rounded-lg overflow-hidden bg-muted">
-                    <img 
-                      src={testimonial.image} 
+                    <img
+                      src={testimonial.image}
                       alt={testimonial.name}
                       className="w-full h-full object-cover object-top"
+                      loading="lazy"
                     />
                   </div>
                 )}

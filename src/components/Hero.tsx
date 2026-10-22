@@ -1,9 +1,11 @@
 import AnimatedShaderHero from "@/components/ui/animated-shader-hero";
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useLowBandwidth } from "@/contexts/LowBandwidthContext";
 
 const Hero = () => {
   const navigate = useNavigate();
+  const { lowBandwidth } = useLowBandwidth();
 
   const scrollToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -11,6 +13,7 @@ const Hero = () => {
 
   return (
     <AnimatedShaderHero
+      lowBandwidth={lowBandwidth}
       trustBadge={{
         text: "Trusted by 2,500+ UK professionals",
         icons: ["⭐"]
