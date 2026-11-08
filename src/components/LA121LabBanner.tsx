@@ -15,14 +15,14 @@ const LA121LabBanner = () => {
         <div className="flex items-center justify-between mb-8">
           <p className="text-xl sm:text-2xl font-extrabold text-yellow-400">LA121 Lab</p>
           <span className="bg-yellow-400 text-[#0b1220] text-xs font-extrabold tracking-wide px-4 py-2 rounded-full whitespace-nowrap">
-            NOW OPEN · FREE
+            NOW OPEN
           </span>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
           <div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight mb-5">
-              Free virtual work experience in <span className="text-yellow-400">Administration, Digital Marketing or AI</span>
+              Virtual work experience in <span className="text-yellow-400">Administration, Digital Marketing or AI</span>
             </h2>
             <p className="text-base sm:text-lg text-white/80 mb-6">
               Work in a real virtual environment, and get a professional reference and certificate on completing the work experience.
@@ -47,13 +47,13 @@ const LA121LabBanner = () => {
           >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-xl sm:text-2xl font-extrabold mb-1">Try it out today</p>
+                <p className="text-xl sm:text-2xl font-extrabold mb-1">Try it out today for free</p>
                 <p className="text-sm sm:text-lg font-bold break-words">lab.la121consultants.co.uk</p>
               </div>
               <ArrowRight className="w-7 h-7 flex-shrink-0 mt-1" />
             </div>
             <p className="text-sm font-semibold mt-3 opacity-80">
-              100% free · Certificate &amp; reference on completion
+              First module free, then £5.99/month · Certificate &amp; reference on completion
             </p>
           </a>
         </div>
