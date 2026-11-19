@@ -33,17 +33,17 @@ export const useSuperAdmin = () => {
           .from('user_roles')
           .select('role')
           .eq('user_id', user.id)
-          .eq('role', 'admin')
+          .in('role', ['admin', 'super_admin'])
           .single();
 
         if (error && error.code !== 'PGRST116') {
           console.error('Error checking super admin role:', error);
         }
 
-        setIsSuperAdmin(true);
+        setIsSuperAdmin(!!data);
       } catch (error) {
         console.error('Error checking super admin role:', error);
-        setIsSuperAdmin(true);
+        setIsSuperAdmin(false);
       } finally {
         setLoading(false);
       }

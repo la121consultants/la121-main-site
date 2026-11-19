@@ -41,16 +41,6 @@ const PaymentSuccess = () => {
           fileUrl: data.fileUrl,
           customerEmail: data.customerEmail,
         });
-
-        // Auto-trigger download if we have a file URL
-        if (data.fileUrl) {
-          const link = document.createElement("a");
-          link.href = data.fileUrl;
-          link.download = "";
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-        }
       } catch (err) {
         console.error("Payment verification failed:", err);
         setError("We couldn't verify your payment. Please contact support with your order ID.");
@@ -135,7 +125,7 @@ const PaymentSuccess = () => {
                   className="w-full justify-between"
                   asChild
                 >
-                  <a href={ebook.fileUrl} download>
+                  <a href={ebook.fileUrl} target="_blank" rel="noopener noreferrer">
                     <span>{ebook.ebookTitle}</span>
                     <Download className="w-4 h-4" />
                   </a>
